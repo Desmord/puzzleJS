@@ -1,0 +1,1 @@
+"use strict";console.log("Witaj w grze puzzle");

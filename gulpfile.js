@@ -20,7 +20,7 @@ const uglify = require('gulp-uglify');
 //--------------------------------------------------------------------------------------
 
 gulp.task('cleanHTML', () => {
-    return del('build/client/index.html');
+    return del('build/index.html');
 });
 
 
@@ -32,7 +32,7 @@ gulp.task('updateHTML', () => {
         .pipe(htmlmin({
             collapseWhitespace: true
         }))
-        .pipe(gulp.dest('build/client/'));
+        .pipe(gulp.dest('build/'));
 
 });
 
@@ -51,7 +51,7 @@ gulp.task('watchHTML', () => {
 //--------------------------------------------------------------------------------------
 
 gulp.task('cleanCss', () => {
-    return del('build/client/style.css');
+    return del('build/main.css');
 });
 
 
@@ -59,14 +59,14 @@ gulp.task('updateCss', () => {
 
     console.log('Uaktualnianie plików css.');
 
-    return gulp.src('dev/css/style.css')
+    return gulp.src('dev/css/main.css')
         .pipe(plumber())
         .pipe(gulpImportCss()) //Łączenie importów
         .pipe(gulpAutoprefixer({
             browsers: ['last 5 versions', 'IE 9']
         }))
         .pipe(cssmin())
-        .pipe(gulp.dest('build/client/'))
+        .pipe(gulp.dest('build/'))
         .pipe(browserSync.stream());
 
 });
@@ -86,7 +86,7 @@ gulp.task('watchCss', () => {
 //--------------------------------------------------------------------------------------
 
 gulp.task('cleanJs', () => {
-    return del('build/client/*.js');
+    return del('build/*.js');
 });
 
 
@@ -94,15 +94,15 @@ gulp.task('updateJs', () => {
 
     console.log('Uaktualnianie plików Js.');
 
-    return gulp.src([`dev/js/client/ElementsCreator.js`,`dev/js/client/TransitionsManager.js`,`dev/js/client/EventsManager.js`,'dev/js/client/main.js' /*, 'dev/js/minrorJs.js']*/ ])
+    return gulp.src([/*`dev/js/client/EventsManager.js`*/'dev/js/main.js' ])
         .pipe(plumber())
         .pipe(babel({
-            presets: ['@babel/env'],
+            presets: ["env"],
             //minified: true
         }))
         .pipe(concat('main.js')) //nazwa
         .pipe(uglify())
-        .pipe(gulp.dest('build/client/'));
+        .pipe(gulp.dest('build/'));
 
 });
 
@@ -111,7 +111,7 @@ gulp.task('watchJs', () => {
 
     console.log('Uruchamianie obserwowania plików Js.');
 
-    gulp.watch('dev/js/client/*', ['updateJs', browserSync.reload]);
+    gulp.watch('dev/js/*', ['updateJs', browserSync.reload]);
 
 });
 
@@ -127,7 +127,7 @@ gulp.task('serwer', () => {
     console.log('Uruchamianie automatycznego odswieżania plików.');
 
     browserSync.init({
-        server: 'build/client/'
+        server: 'build/'
     });
 
 });

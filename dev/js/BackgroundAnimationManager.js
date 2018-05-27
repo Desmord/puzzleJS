@@ -1,11 +1,20 @@
+/**
+ * Class manages displaying squares motion animations in the canvas element specified in the constructor.
+ * Given element style must be already computed to properly get the element's size.
+ */
 class BackgroundAnimationManager {
 
+    /**
+     * Create animation manager
+     * @param {DOM element} container 
+     */
     constructor(container) {
         this.width = container.clientWidth;
         this.height = container.clientHeight;
         this.container = container;
         this.squares = [];
         this.containerGraphicContext = this.container.getContext(`2d`);
+        this.draw = this.draw.bind(this); // bind "this" to be able to call this function again using window.requestAnimationFrame within the same function
     }
 
     setWidth(width) {
@@ -51,13 +60,29 @@ class BackgroundAnimationManager {
 
         this.squares = array;
     }
+
+    draw() {
+        //clear element
+        //draw element
+        //update element position itd...
+
+        //tutaj kod
+        window.requestAnimationFrame(this.draw);
+    }
+
+    startAnimation() {
+        this.updateNumberSquare();
+        //resize window event - update array
+        window.requestAnimationFrame(this.draw);
+    }
+
     //1. aktualicaja liczby kwadratow
     //2 czy wychodzi - if height jest wieszke niz top od kranca
+
 
 }
 
 
 let obiektProbny = new BackgroundAnimationManager(document.querySelector(`.backgorundCanvas`));
 //przy zmianie rozdzielczosci aktualizacja ilosci kwadratow
-obiektProbny.updateNumberSquare();
-console.log(obiektProbny.squares);
+obiektProbny.startAnimation();

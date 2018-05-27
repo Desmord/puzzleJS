@@ -1,5 +1,6 @@
 @import url('reset.css');
 @import url('startSettingContainer.css');
+@import url('backgorundCanvas.css');
 body {
     width: 100vw;
     height: 100vh;

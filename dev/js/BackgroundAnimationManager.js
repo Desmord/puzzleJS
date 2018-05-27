@@ -12,6 +12,8 @@ class BackgroundAnimationManager {
         this.width = container.clientWidth;
         this.height = container.clientHeight;
         this.container = container;
+        this.container.width = this.width;
+        this.container.height = this.height;
         this.squares = [];
         this.containerGraphicContext = this.container.getContext(`2d`);
         this.draw = this.draw.bind(this); // bind "this" to be able to call this function again using window.requestAnimationFrame within the same function
@@ -49,12 +51,12 @@ class BackgroundAnimationManager {
 
         for (let i = 0; i < squareNumber; i++) {
             array[i] = {
-                x: Math.floor(Math.random() * this.getWidth()) + 1,
-                y: 0, //this heigth
-                velocity: Number.parseInt(Math.random() * 10),
+                velocity: Math.random() * 2.5,
                 rotationSpeed: Number.parseInt(Math.random() * 10),
-                width: Number.parseInt(Math.random() * 100),
-                opacity: Math.random() * 0.3
+                width: Number.parseInt(Math.random() * 25),
+                x: (Math.random() * this.getWidth()) + 1,
+                y: this.getHeight(),
+                opacity: Math.random() * 0.25
             };
         }
 
@@ -62,25 +64,48 @@ class BackgroundAnimationManager {
     }
 
     clearElement() {
+
         this.containerGraphicContext.clearRect(0, 0, this.getWidth(), this.getHeight());
         this.containerGraphicContext.beginPath();
+
+    }
+
+    updateSquares() {
+
+        for (let i = 0; i < this.squares.length; i++) {
+            this.squares[i].y -= this.squares[i].velocity;
+        }
+
+    }
+
+    drawSquares() {
+
+        for (let i = 0; i < this.squares.length; i++) {
+            this.containerGraphicContext.beginPath();
+            this.containerGraphicContext.rect(this.squares[i].x, this.squares[i].y, this.squares[i].width, this.squares[i].width);
+            this.containerGraphicContext.fillStyle = `rgba(255,255,255,${this.squares[i].opacity})`;
+            this.containerGraphicContext.fill();
+        }
+
     }
 
     draw() {
 
         this.clearElement();
-        //clear element
-        //draw element
-        //update element position itd...
+        this.drawSquares();
+        this.updateSquares();
 
         window.requestAnimationFrame(this.draw);
 
     }
 
     startAnimation() {
+
         this.updateNumberSquare();
+        console.log(this.squares);
         //resize window event - update array
         window.requestAnimationFrame(this.draw);
+
     }
 
     //1. aktualicaja liczby kwadratow
@@ -91,5 +116,5 @@ class BackgroundAnimationManager {
 
 
 let obiektProbny = new BackgroundAnimationManager(document.querySelector(`.backgorundCanvas`));
-//przy zmianie rozdzielczosci aktualizacja ilosci kwadratow
+
 obiektProbny.startAnimation();

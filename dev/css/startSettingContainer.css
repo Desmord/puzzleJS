@@ -1,12 +1,7 @@
-.startSettingsContainer {
-    /* color: rgba(255, 255, 255, 0.9); */
-}
-
 .startSettingsContainer :nth-child(1) {
     position: relative;
     top: 0px;
-    font-weight: 700;
-    color: rgba(255, 255, 255, 0.9);
+    color: rgba(255, 255, 255, 0.8);
 }
 
 .sliderContainer {
@@ -37,6 +32,7 @@
 
 .startSettingsContainer :nth-child(3) {
     position: relative;
+    color: rgba(92, 189, 135, 0.7);
 }
 
 #startButton {
@@ -44,15 +40,15 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: rgba(255, 255, 255, 0.5);
-    color: rgba(255, 255, 255, 1);
-    font-weight: 700;
-    opacity: 0.7;
+    color: rgba(88,201,202,0.7);
+    border: 2px solid rgba(88,201,202,0.7);
 }
 
-#startButton:hover{
+#startButton:hover {
     cursor: pointer;
     opacity: 1;
+    color: rgba(88,201,202,1);
+    border: 2px solid rgba(88,201,202,1);
 }
 
 @media all and (min-width: 1800px) {
@@ -94,7 +90,7 @@
         left: 20px;
         width: 150px;
         height: 30px;
-        border-radius: 10px;
+        border-radius: 20px;
         font-size: 20px;
     }
 }
@@ -139,7 +135,7 @@
         left: 15px;
         width: 135px;
         height: 27px;
-        border-radius: 9px;
+        border-radius: 14px;
         font-size: 18px;
     }
 }
@@ -184,7 +180,7 @@
         left: 15px;
         width: 125px;
         height: 25px;
-        border-radius: 7px;
+        border-radius: 11px;
         font-size: 16px;
     }
 }

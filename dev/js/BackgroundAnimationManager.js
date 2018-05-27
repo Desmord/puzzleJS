@@ -51,9 +51,10 @@ class BackgroundAnimationManager {
 
         for (let i = 0; i < squareNumber; i++) {
             array[i] = {
-                velocity: Math.random() * 2.5,
+                actualAngle: 0,
+                velocity: Math.random() * 2,
                 rotationSpeed: Number.parseInt(Math.random() * 10),
-                width: Number.parseInt(Math.random() * 25),
+                width: Number.parseInt(Math.random() * 100),
                 x: (Math.random() * this.getWidth()) + 1,
                 y: this.getHeight(),
                 opacity: Math.random() * 0.25
@@ -83,6 +84,9 @@ class BackgroundAnimationManager {
         for (let i = 0; i < this.squares.length; i++) {
             this.containerGraphicContext.beginPath();
             this.containerGraphicContext.rect(this.squares[i].x, this.squares[i].y, this.squares[i].width, this.squares[i].width);
+
+            // this.containerGraphicContext.rotate(this.squares[i].actualAngle * Math.PI / 180);
+            
             this.containerGraphicContext.fillStyle = `rgba(255,255,255,${this.squares[i].opacity})`;
             this.containerGraphicContext.fill();
         }

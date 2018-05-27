@@ -61,13 +61,20 @@ class BackgroundAnimationManager {
         this.squares = array;
     }
 
+    clearElement() {
+        this.containerGraphicContext.clearRect(0, 0, this.getWidth(), this.getHeight());
+        this.containerGraphicContext.beginPath();
+    }
+
     draw() {
+
+        this.clearElement();
         //clear element
         //draw element
         //update element position itd...
 
-        //tutaj kod
         window.requestAnimationFrame(this.draw);
+
     }
 
     startAnimation() {

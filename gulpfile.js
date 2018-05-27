@@ -94,7 +94,7 @@ gulp.task('updateJs', () => {
 
     console.log('Uaktualnianie plików Js.');
 
-    return gulp.src([/*`dev/js/client/EventsManager.js`*/'dev/js/main.js' ])
+    return gulp.src([/*`dev/js/client/EventsManager.js`*/'dev/js/StartMenuManager.js','dev/js/main.js' ])
         .pipe(plumber())
         .pipe(babel({
             presets: ["env"],

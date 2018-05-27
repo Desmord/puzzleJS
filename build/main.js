@@ -1,1 +1,1 @@
-"use strict";console.log("Witaj w grze puzzle");
+"use strict";console.log("witaj w starcvie"),console.log("Witaj w grze puzzle");

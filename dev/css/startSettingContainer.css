@@ -1,0 +1,30 @@
+.startSettingsContainer {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+@media all and (min-width: 1800px) {
+
+    .startSettingsContainer {
+        width: 550px;
+        height: 250px;
+    }
+
+}
+
+@media all and (max-width: 1799px) and (orientation: landscape) {
+
+    .startSettingsContainer {
+        width: 400px;
+        height: 150px;
+    }
+
+}
+
+@media all and (max-width: 1799px) and (orientation: portrait) {
+
+    .startSettingsContainer {
+        width: 300px;
+        height: 400px;
+    }
+
+}

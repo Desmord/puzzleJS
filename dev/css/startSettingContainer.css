@@ -1,12 +1,28 @@
 .startSettingsContainer {
-    background-color: rgba(255,255,255,0.1);
+    background-color: rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.9);
 }
 
 .startSettingsContainer :nth-child(1) {
     position: relative;
     top: 0px;
-    color: rgba(255, 255, 255, 0.9);
     font-weight: 700;
+}
+
+.sliderContainer {
+    position: relative;
+    opacity: 0.8;
+}
+
+.sliderContainer:hover {
+    opacity: 1;
+    cursor: pointer;
+}
+
+.sliderTrack {
+    display: block;
+    background-color: rgba(255, 255, 255, 1);
+    border-radius: 15%;
 }
 
 @media all and (min-width: 1800px) {
@@ -19,6 +35,17 @@
         font-size: 25px;
         width: 650px;
         height: 40px;
+    }
+    .sliderContainer {
+        width: 630px;
+        height: 40px;
+        left: 10px;
+    }
+    .sliderTrack {
+        width: 630px !important;
+        height: 4px !important;
+        top: 18px !important;
+        left: 0px !important;
     }
 }
 
@@ -33,6 +60,18 @@
         width: 400px;
         height: 30px;
     }
+    .sliderContainer {
+        width: 400px;
+        height: 30px;
+        left: 0px;
+        top: 0px;
+    }
+    .sliderTrack {
+        width: 400px !important;
+        height: 3px !important;
+        top: 13px !important;
+        left: 0px !important;
+    }
 }
 
 @media all and (max-width: 1799px) and (orientation: portrait) {
@@ -45,5 +84,17 @@
         font-size: 15px;
         width: 300px;
         height: 30px;
+    }
+    .sliderContainer {
+        width: 300px;
+        height: 25px;
+        left: 0px;
+        top: 0px;
+    }
+    .sliderTrack {
+        width: 300px !important;
+        height: 2px !important;
+        top: 11px !important;
+        left: 0px !important;
     }
 }

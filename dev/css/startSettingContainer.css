@@ -1,30 +1,49 @@
 .startSettingsContainer {
-    background-color: rgba(255, 255, 255, 0.2);
+    background-color: rgba(255,255,255,0.1);
+}
+
+.startSettingsContainer :nth-child(1) {
+    position: relative;
+    top: 0px;
+    color: rgba(255, 255, 255, 0.9);
+    font-weight: 700;
 }
 
 @media all and (min-width: 1800px) {
-
     .startSettingsContainer {
-        width: 550px;
-        height: 250px;
+        width: 650px;
+        height: 350px;
     }
-
+    .startSettingsContainer :nth-child(1) {
+        left: 30px;
+        font-size: 25px;
+        width: 650px;
+        height: 40px;
+    }
 }
 
 @media all and (max-width: 1799px) and (orientation: landscape) {
-
     .startSettingsContainer {
         width: 400px;
-        height: 150px;
+        height: 250px;
     }
-
+    .startSettingsContainer :nth-child(1) {
+        left: 15px;
+        font-size: 20px;
+        width: 400px;
+        height: 30px;
+    }
 }
 
 @media all and (max-width: 1799px) and (orientation: portrait) {
-
     .startSettingsContainer {
         width: 300px;
         height: 400px;
     }
-
+    .startSettingsContainer :nth-child(1) {
+        left: 10px;
+        font-size: 15px;
+        width: 300px;
+        height: 30px;
+    }
 }

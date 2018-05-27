@@ -1,11 +1,12 @@
 .startSettingsContainer :nth-child(1) {
-    position: relative;
     top: 0px;
     color: rgba(255, 255, 255, 0.8);
+    text-align: center;
 }
 
 .sliderContainer {
     position: relative;
+    margin-top: 10px;
 }
 
 .sliderTrack {
@@ -28,6 +29,10 @@
     background-color: rgb(255, 255, 255);
 }
 
+.sliderTrack:hover + .sliderShiftedTrack {
+    background-color: rgba(88, 201, 202, 1);
+}
+
 .sliderThumb {
     position: relative;
     background-color: rgb(235, 233, 233);
@@ -38,6 +43,7 @@
 .startSettingsContainer :nth-child(3) {
     position: relative;
     color: rgba(92, 189, 135, 0.7);
+    text-align: center;
 }
 
 #startButton {
@@ -47,6 +53,7 @@
     align-items: center;
     color: rgba(88, 201, 202, 0.7);
     border: 2px solid rgba(88, 201, 202, 0.7);
+    transition: all 0.4s ease;
 }
 
 #startButton:hover {
@@ -54,6 +61,8 @@
     opacity: 1;
     color: rgba(88, 201, 202, 1);
     border: 2px solid rgba(88, 201, 202, 1);
+    background-color: rgba(67, 130, 131, 0.1);
+    transform: scale(1.05);
 }
 
 @media all and (min-width: 1800px) {
@@ -78,11 +87,11 @@
         top: 18px !important;
         left: 0px !important;
     }
-    .sliderShiftedTrack{
+    .sliderShiftedTrack {
         width: 30% !important;
         height: 2px !important;
         left: 0px !important;
-        top:2px !important;
+        top: -2px !important;
     }
     .sliderThumb {
         width: 20px !important;
@@ -92,13 +101,13 @@
     }
     .startSettingsContainer :nth-child(3) {
         top: 0px;
-        left: 50px;
+        left: 225px;
         width: 200px;
         height: 30px;
     }
     #startButton {
         top: 15px;
-        left: 20px;
+        left: 250px;
         width: 150px;
         height: 30px;
         border-radius: 20px;
@@ -129,11 +138,11 @@
         top: 13px !important;
         left: 0px !important;
     }
-    .sliderShiftedTrack{
+    .sliderShiftedTrack {
         width: 30% !important;
         height: 2px !important;
         left: 0px !important;
-        top:2px !important;
+        top: -2px !important;
     }
     .sliderThumb {
         width: 15px !important;
@@ -143,13 +152,13 @@
     }
     .startSettingsContainer :nth-child(3) {
         top: 10px;
-        left: 40px;
+        left: 100px;
         width: 200px;
         height: 30px;
     }
     #startButton {
         top: 25px;
-        left: 15px;
+        left: 132px;
         width: 135px;
         height: 27px;
         border-radius: 14px;
@@ -180,11 +189,11 @@
         top: 11px !important;
         left: 0px !important;
     }
-    .sliderShiftedTrack{
+    .sliderShiftedTrack {
         width: 30% !important;
         height: 2px !important;
         left: 0px !important;
-        top:2px !important;
+        top: -2px !important;
     }
     .sliderThumb {
         width: 12px !important;
@@ -194,13 +203,13 @@
     }
     .startSettingsContainer :nth-child(3) {
         top: 10px;
-        left: 20px;
+        left: 50px;
         width: 200px;
         height: 30px;
     }
     #startButton {
         top: 25px;
-        left: 15px;
+        left: 82px;
         width: 125px;
         height: 25px;
         border-radius: 11px;

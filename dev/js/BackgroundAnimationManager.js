@@ -56,7 +56,8 @@ class BackgroundAnimationManager {
                 rotationSpeed: Number.parseInt(Math.random() * 10),
                 width: Number.parseInt(Math.random() * 100),
                 x: (Math.random() * this.getWidth()) + 1,
-                y: this.getHeight(),
+                // y: this.getHeight(),
+                y: 100,
                 opacity: Math.random() * 0.25
             };
         }
@@ -71,25 +72,43 @@ class BackgroundAnimationManager {
 
     }
 
-    updateSquares() {
+    updateSquaresVelocity() {
 
-        for (let i = 0; i < this.squares.length; i++) {
-            this.squares[i].y -= this.squares[i].velocity;
-        }
+        this.squares = this.squares.map((val) => {
+
+            val.y -= val.velocity;
+
+            return val;
+
+        });
 
     }
 
     drawSquares() {
 
-        for (let i = 0; i < this.squares.length; i++) {
+        this.squares.forEach((val) => {
+
             this.containerGraphicContext.beginPath();
-            this.containerGraphicContext.rect(this.squares[i].x, this.squares[i].y, this.squares[i].width, this.squares[i].width);
+            this.containerGraphicContext.rect(val.x, val.y, val.width, val.width);
 
             // this.containerGraphicContext.rotate(this.squares[i].actualAngle * Math.PI / 180);
-            
-            this.containerGraphicContext.fillStyle = `rgba(255,255,255,${this.squares[i].opacity})`;
+
+            // this.containerGraphicContext.translate(this.getWidth() / 2, this.getHeight() / 2);
+            // this.containerGraphicContext.translate(this.squares[i].width / 2, this.squares[i].width / 2);
+            // this.containerGraphicContext.translate(0.1,0.1);
+
+            this.containerGraphicContext.rotate(0.01 * Math.PI / 180);
+
+            this.containerGraphicContext.fillStyle = `rgba(255,255,255,${val.opacity})`;
             this.containerGraphicContext.fill();
-        }
+
+
+            // this.containerGraphicContext.translate(-0.2,-0.2);
+
+            // this.containerGraphicContext.translate((this.getWidth() / 2) * -1, (this.getHeight() / 2) * -1);
+            // this.containerGraphicContext.translate((this.squares[i].width / 2) * -1, (this.squares[i].width / 2) * -1);
+
+        });
 
     }
 
@@ -97,7 +116,7 @@ class BackgroundAnimationManager {
 
         this.clearElement();
         this.drawSquares();
-        this.updateSquares();
+        // this.updateSquaresVelocity();
 
         window.requestAnimationFrame(this.draw);
 
@@ -106,7 +125,6 @@ class BackgroundAnimationManager {
     startAnimation() {
 
         this.updateNumberSquare();
-        console.log(this.squares);
         //resize window event - update array
         window.requestAnimationFrame(this.draw);
 

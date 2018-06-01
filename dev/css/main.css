@@ -13,6 +13,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    font-family: 'Source Sans Pro', sans-serif;
+    /* font-family: 'Source Sans Pro', sans-serif; */
+    font-family: 'Consolas', 'Courier New', 'monospace';
     color: white;
 }

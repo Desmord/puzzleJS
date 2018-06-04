@@ -1,5 +1,3 @@
-import { SIGVTALRM } from "constants";
-
 /**
  * Class manages displaying squares motion animations in the canvas element specified in the constructor.
  * Given element style must be already computed to properly get the element's size.
@@ -21,7 +19,7 @@ class BackgroundAnimationManager {
         this.draw = this.draw.bind(this); // bind "this" to be able to call this function again using window.requestAnimationFrame within the same function
 
 
-        this.probaKota = 1;
+        this.probaKonta = 1;
     }
 
     setWidth(width) {
@@ -56,7 +54,7 @@ class BackgroundAnimationManager {
 
         for (let i = 0; i < squareNumber; i++) {
             array[i] = {
-                actualAngle: 0,
+                actualAngle: 1,
                 velocity: Math.random() * 2,
                 rotationSpeed: Number.parseFloat(Math.random() * 1).toFixed(2),
                 width: Number.parseInt(Math.random() * 100),
@@ -91,36 +89,44 @@ class BackgroundAnimationManager {
 
     drawSquares() {
 
-        this.squares.forEach((val) => {
+        this.containerGraphicContext.save();
+
+        this.containerGraphicContext.fillStyle = `rgba(255,255,255,${this.squares[1].opacity})`;
 
 
+        this.containerGraphicContext.translate(400, 400);
+
+        this.containerGraphicContext.rotate(this.probaKonta + Math.PI / 180);
+
+        this.containerGraphicContext.translate(-1 * 400, -1 * 400);
+
+        this.containerGraphicContext.rect(200, 200, 400, 400);
+        this.containerGraphicContext.fill();
+
+        this.containerGraphicContext.restore();
+
+        if (this.probaKonta >= 359) {
+            this.probaKonta = 1;
+        } else {
+            this.probaKonta = this.probaKonta + 0.01;
+        }
+
+        this.containerGraphicContext.save();
+
+        this.containerGraphicContext.fillStyle = `rgba(255,255,255,${this.squares[1].opacity})`;
 
 
+        this.containerGraphicContext.translate(600, 600);
 
-            // /val.x -- pomiar czasu w przypadu pobrania do lokalen zmiennej ctx
-            //sprawdzic czy da sie malowac raz na koncu i czy to szybciej
-            this.containerGraphicContext.beginPath();
-            this.containerGraphicContext.translate(this.getWidth() / 2, this.getHeight() / 2);
-            this.containerGraphicContext.rotate(0.5 * Math.PI / 180);
-            this.containerGraphicContext.translate((-1 * this.getWidth()) / 2, (-1 * this.getHeight()) / 2);
+        this.containerGraphicContext.rotate(this.probaKonta + Math.PI / 180);
 
+        this.containerGraphicContext.translate(-1 * 600, -1 * 600);
 
-            this.containerGraphicContext.rect(val.x, val.y, val.width, val.width);
-            this.containerGraphicContext.fillStyle = `rgba(255,255,255,${val.opacity})`;
-            this.containerGraphicContext.fill();
+        this.containerGraphicContext.rect(300, 300, 600, 600);
+        this.containerGraphicContext.fill();
 
+        this.containerGraphicContext.restore();
 
-            // if (val.rotationSpeed == 359) {
-            //     val.rotationSpeed = 1;
-            // } else {
-            //     val.rotationSpeed = val.rotationSpeed + 0.5;
-            // }                 
-
-            val.x = val.x - 0.1;
-            val.y = SIGVTALRM
-
-
-        });
 
     }
 
@@ -128,25 +134,7 @@ class BackgroundAnimationManager {
 
         this.clearElement();
         this.drawSquares();
-        //tutaj opdate velocity itd
-
-        // this.containerGraphicContext.beginPath();
-        // this.containerGraphicContext.translate((this.getWidth() / 2), (this.getHeight() / 2));
-
-        // this.containerGraphicContext.rotate(this.probaKota *Math.PI / 180);
-
-        // this.containerGraphicContext.translate((-1 * this.getWidth()) / 2, (-1 * this.getHeight()) / 2);
-
-        // this.containerGraphicContext.rect(this.getWidth() / 2 - 150, this.getHeight() / 2 -150, 300, 300);
-        // this.containerGraphicContext.fillStyle = `rgba(255,255,255,1)`;
-
-
-        // this.containerGraphicContext.fill();
-
-
-
-        //tutaj draw squers wedle opracowanego wzrotu
-
+        // this.updateSquaresVelocity();
 
         window.requestAnimationFrame(this.draw);
 

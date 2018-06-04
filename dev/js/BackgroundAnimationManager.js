@@ -56,7 +56,8 @@ class BackgroundAnimationManager {
             array[i] = {
                 actualAngle: 1,
                 velocity: Math.random() * 2,
-                rotationSpeed: Number.parseFloat(Math.random() * 1).toFixed(2),
+                rotationSpeed: Number.parseFloat(Math.random() * 0.03).toFixed(3),
+                //sprawdzenie czy jest 00
                 width: Number.parseInt(Math.random() * 100),
                 x: (Math.random() * this.getWidth()) + 1,
                 // y: this.getHeight(),
@@ -89,44 +90,30 @@ class BackgroundAnimationManager {
 
     drawSquares() {
 
-        this.containerGraphicContext.save();
+        for (let i = 0; i < this.squares.length; i++) {
 
-        this.containerGraphicContext.fillStyle = `rgba(255,255,255,${this.squares[1].opacity})`;
+            this.containerGraphicContext.save();
+
+            this.containerGraphicContext.fillStyle = `rgba(255,255,255,${this.squares[i].opacity})`;
+            this.containerGraphicContext.translate(this.squares[i].x + this.squares[i].width, this.squares[i].y + this.squares[i].width);
+            this.containerGraphicContext.rotate(this.squares[i].actualAngle + Math.PI / 180);
+            this.containerGraphicContext.translate(-1 * this.squares[i].width, -1 * this.squares[i].width);
+            this.containerGraphicContext.rect(this.squares[i].width / 2, this.squares[i].width / 2, this.squares[i].width, this.squares[i].width);
+            this.containerGraphicContext.fill();
+
+            this.containerGraphicContext.restore();
 
 
-        this.containerGraphicContext.translate(400, 400);
+            //tutaj update velocity ()squere
+            //tutaj update rotation ()squere
 
-        this.containerGraphicContext.rotate(this.probaKonta + Math.PI / 180);
 
-        this.containerGraphicContext.translate(-1 * 400, -1 * 400);
-
-        this.containerGraphicContext.rect(200, 200, 400, 400);
-        this.containerGraphicContext.fill();
-
-        this.containerGraphicContext.restore();
-
-        if (this.probaKonta >= 359) {
-            this.probaKonta = 1;
-        } else {
-            this.probaKonta = this.probaKonta + 0.01;
+            if (Number.parseFloat(this.squares[i].actualAngle) >= 359) {
+                this.squares[i].actualAngle = 1;
+            } else {
+                this.squares[i].actualAngle = Number.parseFloat(this.squares[i].actualAngle) + Number.parseFloat(this.squares[i].rotationSpeed);
+            }
         }
-
-        this.containerGraphicContext.save();
-
-        this.containerGraphicContext.fillStyle = `rgba(255,255,255,${this.squares[1].opacity})`;
-
-
-        this.containerGraphicContext.translate(600, 600);
-
-        this.containerGraphicContext.rotate(this.probaKonta + Math.PI / 180);
-
-        this.containerGraphicContext.translate(-1 * 600, -1 * 600);
-
-        this.containerGraphicContext.rect(300, 300, 600, 600);
-        this.containerGraphicContext.fill();
-
-        this.containerGraphicContext.restore();
-
 
     }
 

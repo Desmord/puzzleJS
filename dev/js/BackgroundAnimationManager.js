@@ -17,6 +17,9 @@ class BackgroundAnimationManager {
         this.squares = [];
         this.containerGraphicContext = this.container.getContext(`2d`);
         this.draw = this.draw.bind(this); // bind "this" to be able to call this function again using window.requestAnimationFrame within the same function
+
+
+        this.probaKota = 1;
     }
 
     setWidth(width) {
@@ -120,52 +123,26 @@ class BackgroundAnimationManager {
     draw() {
 
         this.clearElement();
-        // this.drawSquares();
-        // this.updateSquaresVelocity();
+
+        // this.containerGraphicContext.beginPath();
+        // this.containerGraphicContext.translate((this.getWidth() / 2), (this.getHeight() / 2));
+
+        // this.containerGraphicContext.rotate(this.probaKota *Math.PI / 180);
+
+        // this.containerGraphicContext.translate((-1 * this.getWidth()) / 2, (-1 * this.getHeight()) / 2);
+
+        // this.containerGraphicContext.rect(this.getWidth() / 2 - 150, this.getHeight() / 2 -150, 300, 300);
+        // this.containerGraphicContext.fillStyle = `rgba(255,255,255,1)`;
+
+
+        // this.containerGraphicContext.fill();
+
+
+
+        //tutaj draw squers wedle opracowanego wzrotu
+
 
         // window.requestAnimationFrame(this.draw);
-
-        this.containerGraphicContext.beginPath();
-        this.containerGraphicContext.rect(this.squares[1].x, this.squares[1].y, this.squares[1].width, this.squares[1].width);
-        this.containerGraphicContext.fillStyle = `rgba(255,255,255,${this.squares[1].opacity})`;
-        this.containerGraphicContext.fill();
-
-        console.log(this.squares[1].rotationSpeed);
-        console.log(this.squares[1].x);
-        console.log(`-----------------------------------------`);
-
-        ///------------------------------------------------------------------------
-
-        this.containerGraphicContext.beginPath();
-        this.containerGraphicContext.rotate(5 * Math.PI / 180);
-
-        // console.log(this.squares[1].x.toFixed(2));
-        // console.log(this.squares[1].rotationSpeed);
-
-        // console.log(Number.parseFloat(this.squares[1].x.toFixed(2)) + Number.parseFloat(this.squares[1].rotationSpeed));
-        // console.log(typeof Number.parseFloat(this.squares[1].x.toFixed(2)) * Number.parseFloat(Math.cos(5 * Math.PI / 180)));
-        // console.log(typeof Number.parseFloat(this.squares[1].x.toFixed(2)));
-        let x = Number.parseFloat(this.squares[1].x.toFixed(2));
-        let y = Number.parseFloat(this.squares[1].y.toFixed(2));
-        let x2 = Number.parseFloat(Math.cos(5 * Math.PI / 180));
-        let y2 = Number.parseFloat(Math.sin(5 * Math.PI / 180));
-        let xWynik = (x * x2) - (y * y2);
-        let przesuniecieX = x - xWynik;
-        let noweX = x + przesuniecieX;
-
-        // let x2s = Number.parseFloat(Math.sin(5 * Math.PI / 180));
-        // let y2s = Number.parseFloat(Math.cos(5 * Math.PI / 180));
-        // let xWynik2 = (x * x2s) + (y * y2s);
-        // let przesuniecieX2 = x - xWynik2;
-        // let noweX2 = y + przesuniecieX2;
-        // console.log(noweX2);
-
-
-        //albo transform albo przesuniecie przy recie
-        this.containerGraphicContext.rect(noweX, this.squares[1].y, this.squares[1].width, this.squares[1].width);
-
-        this.containerGraphicContext.fillStyle = `rgba(255,255,255,${this.squares[1].opacity})`;
-        this.containerGraphicContext.fill();
 
     }
 

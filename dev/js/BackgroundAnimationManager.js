@@ -1,3 +1,5 @@
+import { SIGVTALRM } from "constants";
+
 /**
  * Class manages displaying squares motion animations in the canvas element specified in the constructor.
  * Given element style must be already computed to properly get the element's size.
@@ -60,7 +62,7 @@ class BackgroundAnimationManager {
                 width: Number.parseInt(Math.random() * 100),
                 x: (Math.random() * this.getWidth()) + 1,
                 // y: this.getHeight(),
-                y: 100,
+                y: (Math.random() * this.getHeight()) + 1,
                 opacity: Math.random() * 0.25
             };
         }
@@ -91,30 +93,32 @@ class BackgroundAnimationManager {
 
         this.squares.forEach((val) => {
 
+
+
+
+
+            // /val.x -- pomiar czasu w przypadu pobrania do lokalen zmiennej ctx
+            //sprawdzic czy da sie malowac raz na koncu i czy to szybciej
             this.containerGraphicContext.beginPath();
+            this.containerGraphicContext.translate(this.getWidth() / 2, this.getHeight() / 2);
+            this.containerGraphicContext.rotate(0.5 * Math.PI / 180);
+            this.containerGraphicContext.translate((-1 * this.getWidth()) / 2, (-1 * this.getHeight()) / 2);
+
+
             this.containerGraphicContext.rect(val.x, val.y, val.width, val.width);
-
-
-
-            // this.containerGraphicContext.rotate(this.squares[i].actualAngle * Math.PI / 180);
-
-            // this.containerGraphicContext.translate(this.getWidth() / 2, this.getHeight() / 2);
-            // this.containerGraphicContext.translate(this.squares[i].width / 2, this.squares[i].width / 2);
-            // this.containerGraphicContext.translate(0.1,0.1);
-
-            // this.containerGraphicContext.rotate(0.01 * Math.PI / 180);
-            this.containerGraphicContext.rotate(1 * Math.PI / 180);
-            //  this.containerGraphicContext.translate(0,-.2);
-
-
             this.containerGraphicContext.fillStyle = `rgba(255,255,255,${val.opacity})`;
             this.containerGraphicContext.fill();
 
 
-            // this.containerGraphicContext.translate(-0.2,-0.2);
+            // if (val.rotationSpeed == 359) {
+            //     val.rotationSpeed = 1;
+            // } else {
+            //     val.rotationSpeed = val.rotationSpeed + 0.5;
+            // }                 
 
-            // this.containerGraphicContext.translate((this.getWidth() / 2) * -1, (this.getHeight() / 2) * -1);
-            // this.containerGraphicContext.translate((this.squares[i].width / 2) * -1, (this.squares[i].width / 2) * -1);
+            val.x = val.x - 0.1;
+            val.y = SIGVTALRM
+
 
         });
 
@@ -123,6 +127,8 @@ class BackgroundAnimationManager {
     draw() {
 
         this.clearElement();
+        this.drawSquares();
+        //tutaj opdate velocity itd
 
         // this.containerGraphicContext.beginPath();
         // this.containerGraphicContext.translate((this.getWidth() / 2), (this.getHeight() / 2));
@@ -142,7 +148,7 @@ class BackgroundAnimationManager {
         //tutaj draw squers wedle opracowanego wzrotu
 
 
-        // window.requestAnimationFrame(this.draw);
+        window.requestAnimationFrame(this.draw);
 
     }
 

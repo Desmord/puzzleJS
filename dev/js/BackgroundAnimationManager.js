@@ -17,9 +17,6 @@ class BackgroundAnimationManager {
         this.squares = [];
         this.containerGraphicContext = this.container.getContext(`2d`);
         this.draw = this.draw.bind(this); // bind "this" to be able to call this function again using window.requestAnimationFrame within the same function
-
-
-        this.probaKonta = 1;
     }
 
     setWidth(width) {
@@ -55,14 +52,12 @@ class BackgroundAnimationManager {
         for (let i = 0; i < squareNumber; i++) {
             array[i] = {
                 actualAngle: 1,
-                velocity: Math.random() * 2,
-                rotationSpeed: Number.parseFloat(Math.random() * 0.03).toFixed(3),
-                //sprawdzenie czy jest 00
+                velocity: Math.random() * 1.5,
+                rotationSpeed: Number.parseFloat(Math.random() * 0.02).toFixed(3),
                 width: Number.parseInt(Math.random() * 100),
                 x: (Math.random() * this.getWidth()) + 1,
-                // y: this.getHeight(),
-                y: (Math.random() * this.getHeight()) + 1,
-                opacity: Math.random() * 0.25
+                y: this.getHeight(),
+                opacity: Math.random() * 0.05
             };
         }
 
@@ -76,7 +71,7 @@ class BackgroundAnimationManager {
 
     }
 
-    updateSquaresVelocity() {
+    updateSquaresPosition() {
 
         this.squares = this.squares.map((val) => {
 
@@ -87,6 +82,27 @@ class BackgroundAnimationManager {
         });
 
     }
+
+    updateSquaresRotationAngle() {
+
+        this.squares = this.squares.map((val) => {
+
+            if (Number.parseFloat(val.actualAngle) >= 359) {
+
+                val.actualAngle = 1;
+                return val;
+
+            } else {
+
+                val.actualAngle = Number.parseFloat(val.actualAngle) + Number.parseFloat(val.rotationSpeed);
+                return val;
+
+            }
+
+        });
+
+    }
+
 
     drawSquares() {
 
@@ -103,16 +119,6 @@ class BackgroundAnimationManager {
 
             this.containerGraphicContext.restore();
 
-
-            //tutaj update velocity ()squere
-            //tutaj update rotation ()squere
-
-
-            if (Number.parseFloat(this.squares[i].actualAngle) >= 359) {
-                this.squares[i].actualAngle = 1;
-            } else {
-                this.squares[i].actualAngle = Number.parseFloat(this.squares[i].actualAngle) + Number.parseFloat(this.squares[i].rotationSpeed);
-            }
         }
 
     }
@@ -121,7 +127,8 @@ class BackgroundAnimationManager {
 
         this.clearElement();
         this.drawSquares();
-        // this.updateSquaresVelocity();
+        this.updateSquaresPosition();
+        this.updateSquaresRotationAngle();
 
         window.requestAnimationFrame(this.draw);
 
@@ -135,8 +142,10 @@ class BackgroundAnimationManager {
 
     }
 
+
+    // sprawdzenie czy obrot jest zero
+    //dodanie usuwanie i dodawanie nowych
     //1. aktualicaja liczby kwadratow
-    //2 czy wychodzi - if height jest wieszke niz top od kranca
 
 
 }

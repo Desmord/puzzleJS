@@ -9,6 +9,7 @@ class BackgroundAnimationManager {
      * @param {DOM element} container 
      */
     constructor(container) {
+
         this.width = container.clientWidth;
         this.height = container.clientHeight;
         this.container = container;
@@ -26,7 +27,8 @@ class BackgroundAnimationManager {
             [153, 184, 152], // green
             [255, 255, 255], // white
             [253, 253, 150] // yellow
-        ]
+        ];
+
     }
 
     setWidth(width) {
@@ -84,7 +86,7 @@ class BackgroundAnimationManager {
 
         let array = [];
 
-        this.squaresNumber = Number.parseInt(this.getWidth() / 150);
+        this.squaresNumber = Number.parseInt(this.getWidth() / 100);
 
         // Minimal number of squares can not be less then 2
         if (this.squaresNumber < 2) {
@@ -158,7 +160,6 @@ class BackgroundAnimationManager {
     drawSquares() {
 
         for (let i = 0; i < this.squares.length; i++) {
-
 
             this.containerGraphicContext.save();
             this.containerGraphicContext.beginPath();

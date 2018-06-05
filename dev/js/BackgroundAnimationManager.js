@@ -15,6 +15,7 @@ class BackgroundAnimationManager {
         this.container.width = this.width;
         this.container.height = this.height;
         this.squares = [];
+        this.squaresNumber = 0;
         this.containerGraphicContext = this.container.getContext(`2d`);
         this.draw = this.draw.bind(this); // bind "this" to be able to call this function again using window.requestAnimationFrame within the same function
     }
@@ -35,30 +36,43 @@ class BackgroundAnimationManager {
         return this.height
     }
 
+    createSquare() {
+
+        let square = {
+            actualAngle: 1,
+            velocity: Math.random() * 1 + 0.01,
+            rotationSpeed: Number.parseFloat(Math.random() * 0.01).toFixed(3),
+            width: Number.parseInt(Math.random() * 100),
+            x: (Math.random() * this.getWidth()) + 1,
+            y: this.getHeight(),
+            opacity: Math.random() * 0.04
+        };
+
+        if (Number.parseFloat(square.rotationSpeed) == 0) {
+            square.rotationSpeed = Number.parseFloat(0.01);
+        }
+
+        return square;
+
+    }
+
     /**
      * Function updates number fo squares displaying in container depending of the container width.
      * Minimal number of squares is 2
      */
-    updateNumberSquare() {
+    fillSquaresArray() {
 
-        let squareNumber = Number.parseInt(this.getWidth() / 200),
-            array = [];
+        let array = [];
+
+        this.squaresNumber = Number.parseInt(this.getWidth() / 150);
 
         // Minimal number of squares can not be less then 2
-        if (squareNumber < 2) {
-            squareNumber = 2;
+        if (this.squaresNumber < 2) {
+            this.squaresNumber = 2;
         }
 
-        for (let i = 0; i < squareNumber; i++) {
-            array[i] = {
-                actualAngle: 1,
-                velocity: Math.random() * 1.5,
-                rotationSpeed: Number.parseFloat(Math.random() * 0.02).toFixed(3),
-                width: Number.parseInt(Math.random() * 100),
-                x: (Math.random() * this.getWidth()) + 1,
-                y: this.getHeight(),
-                opacity: Math.random() * 0.05
-            };
+        for (let i = 0; i < this.squaresNumber; i++) {
+            array[i] = this.createSquare();
         }
 
         this.squares = array;
@@ -103,6 +117,23 @@ class BackgroundAnimationManager {
 
     }
 
+    updateSquaresNumber() {
+
+        let squares = this.squares.filter((square) => {
+
+            return square.y + square.width * 2 > 1;
+
+        });
+
+        const numberSquaresToAdd = this.squaresNumber - squares.length;
+
+        for (let i = 0; i < numberSquaresToAdd; i++) {
+            squares.push(this.createSquare());
+        }
+
+        this.squares = squares;
+
+    }
 
     drawSquares() {
 
@@ -129,6 +160,7 @@ class BackgroundAnimationManager {
         this.drawSquares();
         this.updateSquaresPosition();
         this.updateSquaresRotationAngle();
+        this.updateSquaresNumber();
 
         window.requestAnimationFrame(this.draw);
 
@@ -136,7 +168,7 @@ class BackgroundAnimationManager {
 
     startAnimation() {
 
-        this.updateNumberSquare();
+        this.fillSquaresArray();
         //resize window event - update array
         window.requestAnimationFrame(this.draw);
 

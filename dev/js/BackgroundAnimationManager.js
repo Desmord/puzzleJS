@@ -18,6 +18,15 @@ class BackgroundAnimationManager {
         this.squaresNumber = 0;
         this.containerGraphicContext = this.container.getContext(`2d`);
         this.draw = this.draw.bind(this); // bind "this" to be able to call this function again using window.requestAnimationFrame within the same function
+        this.colors = [
+            [246, 114, 128], // red
+            [192, 108, 132], // purple
+            [53, 92, 125], // dark blue
+            [69, 173, 168], // blue
+            [153, 184, 152], // green
+            [255, 255, 255], // white
+            [253, 253, 150] // yellow
+        ]
     }
 
     setWidth(width) {
@@ -36,16 +45,27 @@ class BackgroundAnimationManager {
         return this.height
     }
 
+    /**
+     * Return darwn color for the class color array
+     * @return {Array} color in the form of an array
+     */
+    drawTheColor() {
+
+        return this.colors[Math.floor(Math.random() * 7)];
+
+    }
+
     createSquare() {
 
         let square = {
             actualAngle: 1,
             velocity: Math.random() * 1 + 0.01,
             rotationSpeed: Number.parseFloat(Math.random() * 0.01).toFixed(3),
-            width: Number.parseInt(Math.random() * 100),
+            width: Number.parseInt(Math.random() * 80),
             x: (Math.random() * this.getWidth()) + 1,
             y: this.getHeight(),
-            opacity: Math.random() * 0.04
+            opacity: Math.random() * 0.20,
+            color: this.drawTheColor()
         };
 
         if (Number.parseFloat(square.rotationSpeed) == 0) {
@@ -139,13 +159,15 @@ class BackgroundAnimationManager {
 
         for (let i = 0; i < this.squares.length; i++) {
 
-            this.containerGraphicContext.save();
 
-            this.containerGraphicContext.fillStyle = `rgba(255,255,255,${this.squares[i].opacity})`;
+            this.containerGraphicContext.save();
+            this.containerGraphicContext.beginPath();
+
             this.containerGraphicContext.translate(this.squares[i].x + this.squares[i].width, this.squares[i].y + this.squares[i].width);
             this.containerGraphicContext.rotate(this.squares[i].actualAngle + Math.PI / 180);
             this.containerGraphicContext.translate(-1 * this.squares[i].width, -1 * this.squares[i].width);
             this.containerGraphicContext.rect(this.squares[i].width / 2, this.squares[i].width / 2, this.squares[i].width, this.squares[i].width);
+            this.containerGraphicContext.fillStyle = `rgba(${this.squares[i].color[0]},${this.squares[i].color[1]},${this.squares[i].color[2]},${this.squares[i].opacity})`;
             this.containerGraphicContext.fill();
 
             this.containerGraphicContext.restore();
@@ -174,11 +196,7 @@ class BackgroundAnimationManager {
 
     }
 
-
-    // sprawdzenie czy obrot jest zero
-    //dodanie usuwanie i dodawanie nowych
-    //1. aktualicaja liczby kwadratow
-
+//resize
 
 }
 

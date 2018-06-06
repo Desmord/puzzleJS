@@ -5,10 +5,16 @@ const startBackGroundSquaresAnimation = () => {
 
 }
 
+const setStartMenuEvents = ()=>{
+
+    let startMenuEvents = new StartMenuManager();
+    startMenuEvents.setEvents();
+}
+
 const init = () => {
 
     startBackGroundSquaresAnimation();
-
+    setStartMenuEvents();
 }
 
 

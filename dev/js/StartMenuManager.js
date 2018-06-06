@@ -4,6 +4,7 @@ class StartMenuManager {
 
         this.startButton = document.querySelector(`#startButton`);
         this.sliderThumb = document.querySelector(`.sliderThumb`);
+        this.sliderThumbX = this.sliderThumb.getBoundingClientRect().x;
         this.sliderTrack = document.querySelector(`.sliderTrack`);
         this.sliderShiftedTrack = document.querySelector(`.sliderShiftedTrack`);
         this.level = 3;
@@ -14,22 +15,21 @@ class StartMenuManager {
 
     thumbDrag(e) {
 
-        // console.log(this.sliderTrack.offsetWidth);
-        // console.log(this.sliderTrack.getBoundingClientRect().x);
-        // console.log(this.sliderTrack.getBoundingClientRect().right);
-        // console.log(this.sliderShiftedTrack.getBoundingClientRect().top);
-
-        // console.log(e.clientX);
+        // przesuniecie niebieskiego paska na dol z-index?
+        // jezdzenie niebieskiego paska // width czy transform?
+        // wartosci brzegowe jesli za szybko wyjadzie sie za koniec
+        // zmianie napisu lvl 
+        // ustawianie lvl w zmiennje kasle
+        // metoda zwracajaca wartosc lvl
 
         if (e.clientX > this.sliderTrack.getBoundingClientRect().x && e.clientX < this.sliderTrack.getBoundingClientRect().right) {
 
-            // console.log((this.sliderTrack.getBoundingClientRect().left - e.clientX) * -1);
+            this.sliderThumb.style.webkitTransform = `translate(${(this.sliderThumbX - e.clientX) * -1}px,0)`;
 
-            this.sliderThumb.style.webkitTransform = `translate(${(this.sliderTrack.getBoundingClientRect().left - e.clientX) * -1}px)`; 
-
-
-
-
+        } else if (1 == 1) {
+            console.log(`tutaj jesli wyjade w lewo ustawianie na poczotku`);
+        } else {
+            console.log(`tutaj jesli wyjade w prawo to ustawianie na koncu`);
         }
 
     }
@@ -70,4 +70,5 @@ class StartMenuManager {
 
     }
 
+    //resize aktualizacja x paskow przesowania
 }

@@ -7,51 +7,49 @@ class StartMenuManager {
         this.sliderTrack = document.querySelector(`.sliderTrack`);
         this.sliderShiftedTrack = document.querySelector(`.sliderShiftedTrack`);
         this.level = 3;
+        this.endThumbDrag = this.endThumbDrag.bind(this);
+        this.thumbDrag = this.thumbDrag.bind(this);
     }
+
+
+    thumbDrag(e) {
+
+        // console.log(this.sliderTrack.offsetWidth);
+        // console.log(this.sliderTrack.getBoundingClientRect().x);
+        // console.log(this.sliderTrack.getBoundingClientRect().right);
+        // console.log(this.sliderShiftedTrack.getBoundingClientRect().top);
+
+        // console.log(e.clientX);
+
+        if (e.clientX > this.sliderTrack.getBoundingClientRect().x && e.clientX < this.sliderTrack.getBoundingClientRect().right) {
+
+            // console.log((this.sliderTrack.getBoundingClientRect().left - e.clientX) * -1);
+
+            this.sliderThumb.style.webkitTransform = `translate(${(this.sliderTrack.getBoundingClientRect().left - e.clientX) * -1}px)`; 
+
+
+
+
+        }
+
+    }
+
+    endThumbDrag() {
+
+        document.removeEventListener(`mouseup`, this.endThumbDrag);
+        document.removeEventListener(`mousemove`, this.thumbDrag);
+
+    }
+
 
     sliderThumbDragEvent() {
 
-        const f1 = () => { //mozna przeniesc do osobnej finkcji w klasie
+        this.sliderThumb.addEventListener(`mousedown`, (e) => {
 
-            console.log(`poruszono`);
+            document.addEventListener(`mouseup`, this.endThumbDrag);
+            document.addEventListener(`mousemove`, this.thumbDrag);
 
-        }
-
-        const closeDrag = () => {
-
-            document.removeEventListener(`mouseup`, closeDrag);
-            document.removeEventListener(`mousemove`, f1);
-
-        }
-
-        const dragDown = (e) => {
-
-            document.addEventListener(`mouseup`, closeDrag);
-
-            document.addEventListener(`mousemove`, f1);
-
-        }
-
-        this.sliderThumb.addEventListener(`mousedown`, dragDown);
-
-        // this.sliderThumb.addEventListener(`mousedown`, (e) => {
-
-
-        //     document.addEventListener(`mousemove`, f1);
-
-
-
-        // });
-
-        // this.sliderThumb.addEventListener(`mouseout`,()=>{
-
-        //     document.removeEventListener(`mousemove`, f1);
-
-        // });
-
-
-        //dragstart
-        //dragend
+        });
 
     }
 

@@ -96,7 +96,7 @@ gulp.task('updateJs', () => {
 
     return gulp.src([
         /*`dev/js/client/EventsManager.js`*/
-        'dev/js/BackgroundAnimationManager.js',
+        'dev/js/SquaresAnimationManager.js',
         'dev/js/StartMenuManager.js',
         'dev/js/main.js' ])
         .pipe(plumber())

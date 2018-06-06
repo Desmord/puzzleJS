@@ -2,7 +2,7 @@
  * Class manages displaying squares motion animations in the canvas element specified in the constructor.
  * Given element style must be already computed to properly get the element's size.
  */
-class BackgroundAnimationManager {
+class SquaresAnimationManager {
 
     /**
      * Create animation manager
@@ -28,7 +28,6 @@ class BackgroundAnimationManager {
             [255, 255, 255], // white
             [253, 253, 150] // yellow
         ];
-
     }
 
     setWidth(width) {
@@ -208,7 +207,7 @@ class BackgroundAnimationManager {
 
                 this.fillSquaresArray();
 
-            }, 500);
+            }, 200);
 
         });
 
@@ -218,17 +217,10 @@ class BackgroundAnimationManager {
 
         this.fillSquaresArray();
         this.setResizeEvent();
-        //resize window event - update array
 
         window.requestAnimationFrame(this.draw);
 
     }
 
-    //resize
-
 }
 
-
-let obiektProbny = new BackgroundAnimationManager(document.querySelector(`.backgorundCanvas`));
-
-obiektProbny.startAnimation();

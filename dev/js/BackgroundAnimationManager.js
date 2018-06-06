@@ -48,7 +48,7 @@ class BackgroundAnimationManager {
     }
 
     /**
-     * Return darwn color for the class color array
+     * Return random color for the class color array
      * @return {Array} color in the form of an array
      */
     drawTheColor() {
@@ -89,8 +89,8 @@ class BackgroundAnimationManager {
         this.squaresNumber = Number.parseInt(this.getWidth() / 100);
 
         // Minimal number of squares can not be less then 2
-        if (this.squaresNumber < 2) {
-            this.squaresNumber = 2;
+        if (this.squaresNumber < 4) {
+            this.squaresNumber = 4;
         }
 
         for (let i = 0; i < this.squaresNumber; i++) {
@@ -189,15 +189,42 @@ class BackgroundAnimationManager {
 
     }
 
+    setResizeEvent() {
+
+        let event;
+
+        window.addEventListener(`resize`, () => {
+
+            clearTimeout(event);
+
+            event = setTimeout(() => {
+
+                this.clearElement();
+
+                this.setHeight(this.container.clientHeight);
+                this.setWidth(this.container.clientWidth);
+                this.container.width = this.width;
+                this.container.height = this.height;
+
+                this.fillSquaresArray();
+
+            }, 500);
+
+        });
+
+    }
+
     startAnimation() {
 
         this.fillSquaresArray();
+        this.setResizeEvent();
         //resize window event - update array
+
         window.requestAnimationFrame(this.draw);
 
     }
 
-//resize
+    //resize
 
 }
 

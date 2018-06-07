@@ -1,16 +1,19 @@
 @import url('reset.css');
 @import url('startSettingContainer.css');
+@import url('backgorundCanvas.css');
 body {
     width: 100vw;
     height: 100vh;
     margin: 0;
     padding: 0;
-    background-image: url(img/background.png);
+    /* background-image: url(img/background.png);
     background-position: center;
-    background-size: cover;
+    background-size: cover; */
+    background-color: rgb(63, 68, 100);
     display: flex;
     justify-content: center;
     align-items: center;
-    font-family: 'Poppins', sans-serif;
+    /* font-family: 'Source Sans Pro', sans-serif; */
+    font-family: 'Consolas', 'Courier New', 'monospace';
     color: white;
 }

@@ -13,23 +13,37 @@ class StartMenuManager {
     }
 
 
+    setLevel(lvl) {
+        this.level = lvl;
+    }
+
+    getLevel() {
+        return this.level;
+    }
+
     thumbDrag(e) {
 
         // przesuniecie niebieskiego paska na dol z-index?
         // jezdzenie niebieskiego paska // width czy transform?
-        // wartosci brzegowe jesli za szybko wyjadzie sie za koniec
         // zmianie napisu lvl 
         // ustawianie lvl w zmiennje kasle
         // metoda zwracajaca wartosc lvl
+        //ustawianie od poczatku translate na 0 przy resize
 
         if (e.clientX > this.sliderTrack.getBoundingClientRect().x && e.clientX < this.sliderTrack.getBoundingClientRect().right) {
 
             this.sliderThumb.style.webkitTransform = `translate(${(this.sliderThumbX - e.clientX) * -1}px,0)`;
 
-        } else if (1 == 1) {
-            console.log(`tutaj jesli wyjade w lewo ustawianie na poczotku`);
-        } else {
-            console.log(`tutaj jesli wyjade w prawo to ustawianie na koncu`);
+            // when the cursor moves out of the left side 
+        } else if (this.sliderThumb.getBoundingClientRect().x < this.sliderTrack.getBoundingClientRect().x || e.clientX < this.sliderTrack.getBoundingClientRect().x) {
+
+            this.sliderThumb.style.webkitTransform = `translate(${(this.sliderThumbX - this.sliderTrack.getBoundingClientRect().x) * -1}px,0)`;
+
+            // when the cursor moves out of the right side 
+        } else if (this.sliderThumb.getBoundingClientRect().x > this.sliderTrack.getBoundingClientRect().x + this.sliderTrack.getBoundingClientRect().width || e.clientX > this.sliderTrack.getBoundingClientRect().x + this.sliderTrack.getBoundingClientRect().width) {
+
+            this.sliderThumb.style.webkitTransform = `translate(${this.sliderTrack.getBoundingClientRect().right - this.sliderThumbX}px,0)`;
+
         }
 
     }

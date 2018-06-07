@@ -23,7 +23,6 @@ class StartMenuManager {
 
     thumbDrag(e) {
 
-        // przesuniecie niebieskiego paska na dol z-index?
         // jezdzenie niebieskiego paska // width czy transform?
         // zmianie napisu lvl 
         // ustawianie lvl w zmiennje kasle
@@ -33,6 +32,9 @@ class StartMenuManager {
         if (e.clientX > this.sliderTrack.getBoundingClientRect().x && e.clientX < this.sliderTrack.getBoundingClientRect().right) {
 
             this.sliderThumb.style.webkitTransform = `translate(${(this.sliderThumbX - e.clientX) * -1}px,0)`;
+            // this.sliderShiftedTrack.style.webkitTransform = `scale(1.5)`;
+            this.sliderShiftedTrack.style.width = `${(this.sliderTrack.getBoundingClientRect().x - e.clientX)* -1}px`;
+            console.log();
 
             // when the cursor moves out of the left side 
         } else if (this.sliderThumb.getBoundingClientRect().x < this.sliderTrack.getBoundingClientRect().x || e.clientX < this.sliderTrack.getBoundingClientRect().x) {

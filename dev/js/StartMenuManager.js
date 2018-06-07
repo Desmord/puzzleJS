@@ -10,8 +10,8 @@ class StartMenuManager {
         this.level = 3;
         this.endThumbDrag = this.endThumbDrag.bind(this);
         this.thumbDrag = this.thumbDrag.bind(this);
-    }
 
+    }
 
     setLevel(lvl) {
         this.level = lvl;

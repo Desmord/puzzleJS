@@ -7,46 +7,107 @@ class StartMenuManager {
         this.sliderThumbX = this.sliderThumb.getBoundingClientRect().x;
         this.sliderTrack = document.querySelector(`.sliderTrack`);
         this.sliderShiftedTrack = document.querySelector(`.sliderShiftedTrack`);
+        this.label = document.querySelector(`.startSettingsContainer :nth-child(3)`);
         this.level = 3;
         this.endThumbDrag = this.endThumbDrag.bind(this);
         this.thumbDrag = this.thumbDrag.bind(this);
+        this.resetSliderAndLevel = this.resetSliderAndLevel.bind(this);
 
     }
 
     setLevel(lvl) {
+
         this.level = lvl;
+
     }
 
     getLevel() {
+
         return this.level;
+
+    }
+
+    setLabelText(text) {
+
+        this.label.innerHTML = `Poziom: &nbsp; ${text}`;
+
+    }
+
+    resetSliderTransformations(){
+
+        this.sliderThumb.style.webkitTransform = `translate(0px,0)`;
+
+    }
+
+    resetTrackSliderWidth(){
+
+        this.sliderShiftedTrack.style.width = `30%`;
+
+    }
+
+    resetLevel(){
+
+        this.setLevel(3);
+        this.setLabelText(3);
+
+    }
+
+    resetSliderAndLevel() {
+
+        this.sliderThumbX = this.sliderThumb.getBoundingClientRect().x;
+
+        this.resetSliderTransformations();
+        this.resetTrackSliderWidth();
+        this.resetLevel();
+
+    }
+
+    calculateLevel() {
+
+        let sliderRange = this.sliderTrack.getBoundingClientRect().width,
+            thumbPosition = this.sliderThumb.getBoundingClientRect().x,
+            sliderPosition = this.sliderTrack.getBoundingClientRect().x,
+            thumbShift = thumbPosition - sliderPosition,
+            lvl = Number.parseInt((thumbShift / (sliderRange / 10)) + 1);
+
+        if (lvl <= 0) {
+            return 1;
+        } else if (lvl >= 11) {
+            return 10;
+        } else {
+            return lvl;
+        }
+
     }
 
     thumbDrag(e) {
 
-        // jezdzenie niebieskiego paska // width czy transform?
-        // zmianie napisu lvl 
-        // ustawianie lvl w zmiennje kasle
-        // metoda zwracajaca wartosc lvl
-        //ustawianie od poczatku translate na 0 przy resize
-
         if (e.clientX > this.sliderTrack.getBoundingClientRect().x && e.clientX < this.sliderTrack.getBoundingClientRect().right) {
 
             this.sliderThumb.style.webkitTransform = `translate(${(this.sliderThumbX - e.clientX) * -1}px,0)`;
-            // this.sliderShiftedTrack.style.webkitTransform = `scale(1.5)`;
             this.sliderShiftedTrack.style.width = `${(this.sliderTrack.getBoundingClientRect().x - e.clientX)* -1}px`;
-            console.log();
+
+            this.setLevel(this.calculateLevel());
+
 
             // when the cursor moves out of the left side 
         } else if (this.sliderThumb.getBoundingClientRect().x < this.sliderTrack.getBoundingClientRect().x || e.clientX < this.sliderTrack.getBoundingClientRect().x) {
 
             this.sliderThumb.style.webkitTransform = `translate(${(this.sliderThumbX - this.sliderTrack.getBoundingClientRect().x) * -1}px,0)`;
 
+            this.setLevel(1);
+
+
             // when the cursor moves out of the right side 
         } else if (this.sliderThumb.getBoundingClientRect().x > this.sliderTrack.getBoundingClientRect().x + this.sliderTrack.getBoundingClientRect().width || e.clientX > this.sliderTrack.getBoundingClientRect().x + this.sliderTrack.getBoundingClientRect().width) {
 
             this.sliderThumb.style.webkitTransform = `translate(${this.sliderTrack.getBoundingClientRect().right - this.sliderThumbX}px,0)`;
 
+            this.setLevel(10);
+
         }
+
+        this.setLabelText(this.getLevel());
 
     }
 
@@ -79,12 +140,20 @@ class StartMenuManager {
 
     }
 
+    resizeWindowEvent() {
+
+        window.addEventListener(`resize`, this.resetSliderAndLevel);
+
+    }
+
     setEvents() {
 
         this.startButtonEvent();
         this.sliderThumbDragEvent();
+        this.resizeWindowEvent();
 
     }
 
-    //resize aktualizacja x paskow przesowania
+    //nacisniecie na pasu akutomatycznie przesunie na wskazane miejsce
+    //start
 }

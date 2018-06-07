@@ -96,6 +96,7 @@ gulp.task('updateJs', () => {
 
     return gulp.src([
         /*`dev/js/client/EventsManager.js`*/
+        'dev/js/TransitionManager.js',
         'dev/js/SquaresAnimationManager.js',
         'dev/js/StartMenuManager.js',
         'dev/js/main.js' ])

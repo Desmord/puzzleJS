@@ -1,7 +1,9 @@
 class StartMenuManager {
 
-    constructor() {
+    constructor(transitionManager) {
 
+        this.transitionManager = transitionManager;
+        this.sliderContainer = document.querySelector(`.sliderContainer`);
         this.startButton = document.querySelector(`#startButton`);
         this.sliderThumb = document.querySelector(`.sliderThumb`);
         this.sliderThumbX = this.sliderThumb.getBoundingClientRect().x;
@@ -33,19 +35,19 @@ class StartMenuManager {
 
     }
 
-    resetSliderTransformations(){
+    resetSliderTransformations() {
 
         this.sliderThumb.style.webkitTransform = `translate(0px,0)`;
 
     }
 
-    resetTrackSliderWidth(){
+    resetTrackSliderWidth() {
 
         this.sliderShiftedTrack.style.width = `30%`;
 
     }
 
-    resetLevel(){
+    resetLevel() {
 
         this.setLevel(3);
         this.setLabelText(3);
@@ -54,6 +56,7 @@ class StartMenuManager {
 
     resetSliderAndLevel() {
 
+        // Updating slider thumb X 
         this.sliderThumbX = this.sliderThumb.getBoundingClientRect().x;
 
         this.resetSliderTransformations();
@@ -134,7 +137,7 @@ class StartMenuManager {
 
         this.startButton.addEventListener(`click`, () => {
 
-            console.log(`start`);
+            this.transitionManager.start(this.getLevel());
 
         });
 
@@ -146,14 +149,19 @@ class StartMenuManager {
 
     }
 
+    sliderTrackClickEvent() {
+
+        this.sliderContainer.addEventListener(`click`, this.thumbDrag);
+
+    }
+
     setEvents() {
 
         this.startButtonEvent();
+        this.sliderTrackClickEvent();
         this.sliderThumbDragEvent();
         this.resizeWindowEvent();
 
     }
 
-    //nacisniecie na pasu akutomatycznie przesunie na wskazane miejsce
-    //start
 }

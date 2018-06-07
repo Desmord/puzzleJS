@@ -1,21 +1,12 @@
-const startBackGroundSquaresAnimation = () => {
-
-    let backGroundAnimation = new SquaresAnimationManager(document.querySelector(`.backgorundCanvas`));
-    backGroundAnimation.startAnimation();
-
-}
-
-const setStartMenuEvents = ()=>{
-
-    let startMenuEvents = new StartMenuManager();
-    startMenuEvents.setEvents();
-}
+const backGroundAnimation = new SquaresAnimationManager(document.querySelector(`.backgorundCanvas`)),
+    transitionManager = new TransitionManager(),
+    startMenuEvents = new StartMenuManager(transitionManager);
 
 const init = () => {
 
-    startBackGroundSquaresAnimation();
-    setStartMenuEvents();
-}
+    backGroundAnimation.startAnimation();
+    startMenuEvents.setEvents();
 
+}
 
 init();

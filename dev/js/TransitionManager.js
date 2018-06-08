@@ -5,27 +5,31 @@ class TransitionManager {
         this.level = 3;
         this.startContainer = document.querySelector(`.startSettingsContainer`);
         this.gameContainer = document.querySelector(`.gameContainer`);
+        this.gameBoard = document.querySelector(`.gameBoard`);
+        this.gameMenu = document.querySelector(`.gameMenu`);
+        this.orientation = `landscape`;
 
     }
 
-    setLevel(lvl){
+    setLevel(lvl) {
 
         this.level = lvl;
 
     }
 
-    hideStartMenu(){
+    setOrientation() {
 
-        return new Promise((resolve,reject)=>{
+        return new Promise((resolve, reject) => {
 
-            this.startContainer.classList.add(`fadeIn`);
+            if (window.innerWidth > window.innerHeight) {
 
-            setTimeout(()=>{
+                this.orientation = `landscape`;
 
-                this.startContainer.style.display = `none`;
-                this.startContainer.classList.remove(`fadeIn`);
+            } else {
 
-            },490);
+                this.orientation = `portrait`;
+
+            }
 
             resolve();
 
@@ -33,73 +37,92 @@ class TransitionManager {
 
     }
 
-    showStartMenu(){
+    hideStartMenu() {
 
-        return new Promise((resolve,reject)=>{
+        return new Promise((resolve, reject) => {
+
+            this.startContainer.classList.add(`fadeIn`);
+
+            setTimeout(() => {
+
+                this.startContainer.style.display = `none`;
+                this.startContainer.classList.remove(`fadeIn`);
+
+            }, 490);
+
+            resolve();
+
+        });
+
+    }
+
+    showStartMenu() {
+
+        return new Promise((resolve, reject) => {
             console.log(`pokazywanie menu startowe`);
         });
 
     }
 
-    setGameBoardSize(){
+    setGameBoardSize() {
 
-        return new Promise((resolve,reject)=>{
+        return new Promise((resolve, reject) => {
             console.log(`ustawianie wielk tablicy`);
         });
 
     }
 
-    setGameBoardPosition(){
+    setGameBoardPosition() {
 
-        return new Promise((resolve,reject)=>{
+        return new Promise((resolve, reject) => {
             console.log(`ustawianie pozycji tablicy`);
         });
 
     }
 
-    setGameMenuSize(){
+    setGameMenuSize() {
 
-        return new Promise((resolve,reject)=>{
+        return new Promise((resolve, reject) => {
             console.log(`ustawnie wielkosci menu`);
         });
 
     }
 
-    setGameMenuPosition(){
+    setGameMenuPosition() {
 
-        return new Promise((resolve,reject)=>{
-            console.log(`ustawnia pozycji menu`);  
+        return new Promise((resolve, reject) => {
+            console.log(`ustawnia pozycji menu`);
         });
 
     }
 
-    showGameMenu(){
+    showGameMenu() {
 
-        return new Promise((resolve,reject)=>{
+        return new Promise((resolve, reject) => {
             console.log(`pokazanie menu gey`);
         });
 
     }
 
-    hideGameMenu(){
+    hideGameMenu() {
 
-        return new Promise((resolve,reject)=>{
+        return new Promise((resolve, reject) => {
             console.log(`howanie menu gry`);
         });
 
     }
 
-    showGameBoard(){
+    showGameBoard() {
 
-        return new Promise((resolve,reject)=>{
+        return new Promise((resolve, reject) => {
             console.log(`pokazanie tablicy gry`);
         });
 
     }
 
-    hideGameBoard(){
+    hideGameBoard() {
 
-        return new Promise((resolve,reject)=>{
+        return new Promise((resolve, reject) => {
             console.log(`ukrycie tablicy gry`);
         });
 
@@ -109,19 +132,20 @@ class TransitionManager {
 
         this.setLevel(lvl);
 
-        this.hideStartMenu().then(()=>{
+        this.setOrientation().then(() => {
 
+            return this.hideStartMenu();
+
+        }).then(() => {
+            //tutaj kolejna promiska
+
+        }).catch((err) => {
+            console.log(`jakis blad`);
         });
 
     }
-}
 
-// let zmienna = loadFieldsData().then(result =>{
-//     return setFieldsData(result);
-// }).then(result =>{
-//     return loadInfoData(result);      
-// }).then(result => {
-//     callback(result);
-// }).catch(error => {
-//     console.log("Wystąpił błąd:" + error);
-// });   
+    endGame(){
+        
+    }
+}

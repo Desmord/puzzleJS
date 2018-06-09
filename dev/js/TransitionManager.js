@@ -59,71 +59,77 @@ class TransitionManager {
     showStartMenu() {
 
         return new Promise((resolve, reject) => {
-            console.log(`pokazywanie menu startowe`);
+
+
+
+
+
         });
 
     }
 
-    setGameBoardSize() {
+    setSize(properties) {
+
+        this.gameBoard.style.width = `${properties.boardWidth}px`;
+        this.gameBoard.style.height = `${properties.boardWidth}px`;
+        this.gameBoard.style.marginRight = `${properties.margin}px`;
+
+        this.gameMenu.style.width = `${properties.menuWidth}px`;
+        this.gameMenu.style.height = `${properties.menuHeigth}px`;
+
+    }
+
+    setElementsSize() {
 
         return new Promise((resolve, reject) => {
-            console.log(`ustawianie wielk tablicy`);
+
+            const windowWidth = window.innerWidth,
+                windowHeight = window.innerHeight;
+
+            let boardWidth = Number.parseInt(windowWidth * 0.55),
+                margin = Number.parseInt(windowWidth * 0.05),
+                menuWidth = Number.parseInt(windowWidth * 0.25),
+                menuHeigth = Number.parseInt(windowHeight * 0.8);
+
+            if (this.orientation === `landscape`) {
+
+                // Adjusts the size depending on the height
+                boardWidth = ((Number.parseInt(windowHeight * 0.8)) < boardWidth) ? Number.parseInt(windowHeight * 0.8) : boardWidth;
+                menuHeigth = (boardWidth < menuHeigth) ? boardWidth : menuHeigth;
+
+                this.setSize({
+                    boardWidth,
+                    margin,
+                    menuWidth,
+                    menuHeigth
+                });
+
+                // Orientation portrait
+            } else {
+
+
+
+
+
+            }
+
+            resolve();
+
         });
 
     }
 
-    setGameBoardPosition() {
+    showGame() {
 
         return new Promise((resolve, reject) => {
-            console.log(`ustawianie pozycji tablicy`);
-        });
 
-    }
+            setTimeout(() => {
+                this.gameContainer.style.display = `flex`;
 
-    setGameMenuSize() {
+            }, 1000);
 
-        return new Promise((resolve, reject) => {
-            console.log(`ustawnie wielkosci menu`);
-        });
+            resolve();
 
-    }
-
-    setGameMenuPosition() {
-
-        return new Promise((resolve, reject) => {
-            console.log(`ustawnia pozycji menu`);
-        });
-
-    }
-
-    showGameMenu() {
-
-        return new Promise((resolve, reject) => {
-            console.log(`pokazanie menu gey`);
-        });
-
-    }
-
-    hideGameMenu() {
-
-        return new Promise((resolve, reject) => {
-            console.log(`howanie menu gry`);
-        });
-
-    }
-
-    showGameBoard() {
-
-        return new Promise((resolve, reject) => {
-            console.log(`pokazanie tablicy gry`);
-        });
-
-    }
-
-    hideGameBoard() {
-
-        return new Promise((resolve, reject) => {
-            console.log(`ukrycie tablicy gry`);
         });
 
     }
@@ -132,20 +138,29 @@ class TransitionManager {
 
         this.setLevel(lvl);
 
+
+        //liczenie pozycji i rozmiaro moze w tej tablicy obietnic
         this.setOrientation().then(() => {
 
             return this.hideStartMenu();
 
         }).then(() => {
-            //tutaj kolejna promiska
+
+            return this.setElementsSize();
+
+        }).then(() => {
+
+            return this.showGame();
 
         }).catch((err) => {
-            console.log(`jakis blad`);
+
+            console.log(`bład`);
+
         });
 
     }
 
-    endGame(){
-        
+    endGame() {
+
     }
 }

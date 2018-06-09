@@ -41,12 +41,12 @@ class TransitionManager {
 
         return new Promise((resolve, reject) => {
 
-            this.startContainer.classList.add(`fadeIn`);
+            this.startContainer.classList.add(`fadeOut`);
 
             setTimeout(() => {
 
                 this.startContainer.style.display = `none`;
-                this.startContainer.classList.remove(`fadeIn`);
+                this.startContainer.classList.remove(`fadeOut`);
 
             }, 490);
 
@@ -60,9 +60,20 @@ class TransitionManager {
 
         return new Promise((resolve, reject) => {
 
+            setTimeout(() => {
 
+                this.startContainer.style.display = `block`;
+                this.startContainer.classList.add(`fadeIn`);
 
+            }, 600);
 
+            setTimeout(() => {
+
+                this.startContainer.classList.remove(`fadeIn`);
+
+            }, 1200);
+
+            resolve();
 
         });
 
@@ -76,10 +87,12 @@ class TransitionManager {
         if (properties.marginRight) {
 
             this.gameBoard.style.marginRight = `${properties.marginRight}px`;
+            this.gameBoard.style.marginBottom = `0px`;
 
         } else {
 
             this.gameBoard.style.marginBottom = `${properties.marginBottom}px`;
+            this.gameBoard.style.marginRight = `0px`;
 
         }
 
@@ -125,13 +138,6 @@ class TransitionManager {
                 // Adjusts the size depending on the width
                 boardWidth = (boardWidth > Number.parseInt(windowWidth * 0.9)) ? Number.parseInt(windowWidth * 0.9) : boardWidth;
 
-                // this.gameBoard.style.width = `${boardWidth}px`;
-                // this.gameBoard.style.height = `${boardWidth}px`;
-                // this.gameBoard.style.marginBottom = `${margin}px`;
-
-                // this.gameMenu.style.width = `${menuWidth}px`;
-                // this.gameMenu.style.height = `${menuHeigth}px`;
-
                 this.setSize({
                     boardWidth,
                     marginRight: 0,
@@ -139,7 +145,6 @@ class TransitionManager {
                     menuWidth,
                     menuHeigth
                 });
-
 
             }
 
@@ -154,9 +159,35 @@ class TransitionManager {
         return new Promise((resolve, reject) => {
 
             setTimeout(() => {
-                this.gameContainer.style.display = `flex`;
 
-            }, 1000);
+                this.gameContainer.style.display = `flex`;
+                this.gameContainer.classList.add(`fadeIn`);
+
+            }, 600);
+
+            setTimeout(() => {
+
+                this.gameContainer.classList.remove(`fadeIn`);
+
+            }, 1200);
+
+            resolve();
+
+        });
+
+    }
+
+    hideGame() {
+
+        return new Promise((resolve, reject) => {
+
+            this.gameContainer.classList.add(`fadeOut`);
+
+            setTimeout(() => {
+                this.gameContainer.style.display = `none`;
+                this.gameContainer.classList.remove(`fadeOut`);
+
+            }, 490);
 
             resolve();
 
@@ -168,8 +199,6 @@ class TransitionManager {
 
         this.setLevel(lvl);
 
-
-        //liczenie pozycji i rozmiaro moze w tej tablicy obietnic
         this.setOrientation().then(() => {
 
             return this.hideStartMenu();
@@ -192,5 +221,11 @@ class TransitionManager {
 
     endGame() {
 
+        this.hideGame().then(() => {
+
+            return this.showStartMenu();
+
+        });
     }
+
 }

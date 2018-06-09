@@ -72,7 +72,16 @@ class TransitionManager {
 
         this.gameBoard.style.width = `${properties.boardWidth}px`;
         this.gameBoard.style.height = `${properties.boardWidth}px`;
-        this.gameBoard.style.marginRight = `${properties.margin}px`;
+
+        if (properties.marginRight) {
+
+            this.gameBoard.style.marginRight = `${properties.marginRight}px`;
+
+        } else {
+
+            this.gameBoard.style.marginBottom = `${properties.marginBottom}px`;
+
+        }
 
         this.gameMenu.style.width = `${properties.menuWidth}px`;
         this.gameMenu.style.height = `${properties.menuHeigth}px`;
@@ -86,12 +95,12 @@ class TransitionManager {
             const windowWidth = window.innerWidth,
                 windowHeight = window.innerHeight;
 
-            let boardWidth = Number.parseInt(windowWidth * 0.55),
-                margin = Number.parseInt(windowWidth * 0.05),
-                menuWidth = Number.parseInt(windowWidth * 0.25),
-                menuHeigth = Number.parseInt(windowHeight * 0.8);
-
             if (this.orientation === `landscape`) {
+
+                let boardWidth = Number.parseInt(windowWidth * 0.55),
+                    marginRight = Number.parseInt(windowWidth * 0.05),
+                    menuWidth = Number.parseInt(windowWidth * 0.25),
+                    menuHeigth = Number.parseInt(windowHeight * 0.8);
 
                 // Adjusts the size depending on the height
                 boardWidth = ((Number.parseInt(windowHeight * 0.8)) < boardWidth) ? Number.parseInt(windowHeight * 0.8) : boardWidth;
@@ -99,7 +108,8 @@ class TransitionManager {
 
                 this.setSize({
                     boardWidth,
-                    margin,
+                    marginRight,
+                    marginBottom: 0,
                     menuWidth,
                     menuHeigth
                 });
@@ -107,8 +117,28 @@ class TransitionManager {
                 // Orientation portrait
             } else {
 
+                let marginBottom = Number.parseInt(windowHeight * 0.05),
+                    boardWidth = Number.parseInt(windowHeight * 0.55),
+                    menuHeigth = Number.parseInt(windowHeight * 0.2),
+                    menuWidth = Number.parseInt(windowWidth * 0.8);
 
+                // Adjusts the size depending on the width
+                boardWidth = (boardWidth > Number.parseInt(windowWidth * 0.9)) ? Number.parseInt(windowWidth * 0.9) : boardWidth;
 
+                // this.gameBoard.style.width = `${boardWidth}px`;
+                // this.gameBoard.style.height = `${boardWidth}px`;
+                // this.gameBoard.style.marginBottom = `${margin}px`;
+
+                // this.gameMenu.style.width = `${menuWidth}px`;
+                // this.gameMenu.style.height = `${menuHeigth}px`;
+
+                this.setSize({
+                    boardWidth,
+                    marginRight: 0,
+                    marginBottom,
+                    menuWidth,
+                    menuHeigth
+                });
 
 
             }

@@ -1,29 +1,137 @@
-.gameContainer{
+.gameContainer {
     display: flex;
     justify-content: center;
     align-items: center;
     display: none;
 }
 
-.gameBoard:hover{
-
+.gameBoard:hover {
     cursor: pointer;
-    box-shadow: 0px 0px 5px 2px rgba(0,0,0,0.5);
+    box-shadow: 0px 0px 5px 2px rgba(0, 0, 0, 0.5);
 }
 
-@media all and (orientation: landscape){
-    .gameContainer{
+.gameMenu {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.timer {
+    font-size: 50px;
+    font-weight: 700;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.menuButtons {
+    margin-top: 20px;
+    margin-bottom: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+}
+
+.button {
+    width: 70px;
+    height: 70px;
+    margin-left: 15px;
+    opacity: 0.7;
+    transition: all 0.3s ease;
+}
+
+.button:hover{
+    opacity: 1;
+    cursor: pointer;
+    color: white;
+}
+
+.levelInfo {
+    opacity: 0.7;
+    font-size: 30px;
+}
+
+.resultInfo {
+    margin-top: 15px;
+    font-size: 50px;
+    font-weight: 700;
+    color: rgba(92, 189, 135, 0.7);
+}
+
+#start:nth-child(1){
+    width: 0;
+    height: 0;
+    border-top: 35px solid transparent;
+    border-bottom: 35px solid transparent;
+    border-left: 70px solid rgba(255, 255, 255, 1);
+    border-right: 0px solid transparent;
+}
+
+#pasue{
+    display: block;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+}
+
+#pause div{
+    position: relative;
+    top: 0px;
+    left: 0px;
+    width: 20px;
+    height: 70px;
+    background-color: white;
+    margin-left: 10px;
+    float: left;
+}
+
+#endGame{
+
+    background-color: white;
+
+}
+
+@media all and (orientation: landscape) {
+    .gameContainer {
         flex-direction: row;
     }
 }
 
-@media all and (orientation: portrait){
-    .gameContainer{
+@media all and (orientation: portrait) {
+    .gameContainer {
         flex-direction: column;
     }
-}
+    .timer {
+        font-size: 30px;
+    }
+    .menuButtons {
+        margin-top: 5px;
+        margin-bottom: 5px;
+    }
+    .button {
+        width: 40px;
+        height: 40px;
+        margin-left: 5px;
 
+    }
+    #start:nth-child(1){
+        border-top: 20px solid transparent;
+        border-bottom: 20px solid transparent;
+        border-left: 40px solid rgba(255, 255, 255, 0.7);
+        border-right: 0px solid transparent;
+    
+    }
+    #pause div{
+        width: 10px;
+        height: 40px;
+        margin-left: 7px;
+    }
 
-.gameMenu{
-    background-color: rgb(201, 87, 87);
+    .levelInfo {
+        font-size: 20px;
+    }
+    .resultInfo {
+        font-size: 30px;
+        font-weight: 700;
+    }
 }

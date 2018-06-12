@@ -49,9 +49,46 @@ class GameManager {
 
     }
 
+    hoverEvents() {
+
+        const menu = document.querySelector(`.menuButtons`);
+
+        menu.addEventListener(`mouseover`, (e) => {
+
+            let tooltip = document.querySelector(`.tooltip`);
+
+            if (e.target.id === `endGame`) {
+
+                tooltip.innerHTML = e.target.getAttribute(`data-tooltip`);
+                tooltip.style.opacity = `0.7`;
+
+            } else if (e.target.id === `start`) {
+
+                tooltip.innerHTML = e.target.getAttribute(`data-tooltip`);
+                tooltip.style.opacity = `0.7`;
+
+            } else  if (e.target.id === `pause`){
+
+                tooltip.innerHTML = e.target.getAttribute(`data-tooltip`);
+                tooltip.style.opacity = `0.7`;
+
+            }
+
+        });
+
+        menu.addEventListener(`mouseleave`,()=>{
+
+           document.querySelector(`.tooltip`).style.opacity = `0`;
+
+        });
+
+    }
+
     setEvents() {
 
         this.setCloseEvent();
+        this.hoverEvents();
+
         this.image.addEventListener(`load`, this.drawImage.bind(this), false);
 
     }
@@ -67,7 +104,6 @@ class GameManager {
 
     }
 
-    // css dal menu v.4
     // rysowanie napisu wczytywanie gry
     // rysowanie calej mapy  z podzialem na kwasdraty (po to zeby resize bylo latwe)
     // resize ze zmiana wielkosci i odswiezaniem obrazu

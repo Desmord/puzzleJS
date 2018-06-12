@@ -137,7 +137,7 @@ class StartMenuManager {
 
         this.startButton.addEventListener(`click`, () => {
 
-            this.transitionManager.start(this.getLevel());
+            this.transitionManager.startGame(this.getLevel());
 
         });
 

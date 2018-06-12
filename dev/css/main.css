@@ -1,6 +1,8 @@
 @import url('reset.css');
+@import url('animations.css');
 @import url('startSettingContainer.css');
 @import url('backgorundCanvas.css');
+@import url('gameContainer.css');
 body {
     width: 100vw;
     height: 100vh;

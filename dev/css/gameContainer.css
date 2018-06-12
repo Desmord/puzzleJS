@@ -1,0 +1,26 @@
+.gameContainer{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    display: none;
+}
+
+@media all and (orientation: landscape){
+    .gameContainer{
+        flex-direction: row;
+    }
+}
+
+@media all and (orientation: portrait){
+    .gameContainer{
+        flex-direction: column;
+    }
+}
+
+.gameBoard{
+    background-color: #fff;
+}
+
+.gameMenu{
+    background-color: rgb(201, 87, 87);
+}

@@ -13,13 +13,13 @@ class TransitionManager {
 
     }
 
-    setGameManager(manager){
+    setGameManager(manager) {
 
         this.gameManager = manager;
 
     }
 
-    setMenuManager(manager){
+    setMenuManager(manager) {
 
         this.menuManager = manager;
 
@@ -225,8 +225,9 @@ class TransitionManager {
 
             return this.showGame();
 
-        }).then(()=>{
-
+        }).then(() => {
+            
+            this.gameManager.setLevel(this.level);
             this.gameManager.init();
 
         }).catch((err) => {

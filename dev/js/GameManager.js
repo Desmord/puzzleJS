@@ -64,7 +64,8 @@ class GameManager {
     }
 
     // css dla wczytywaina 
-    // css dal menu
+    // css dal menu v.4
+    // rysowanie napisu wczytywanie gry
     // resize ze zmiana wielkosci i odswiezaniem obrazu
 
 

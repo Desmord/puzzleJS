@@ -1,13 +1,16 @@
 const backGroundAnimation = new SquaresAnimationManager(document.querySelector(`.backgorundCanvas`)),
     transitionManager = new TransitionManager(),
-    startMenuEvents = new StartMenuManager(transitionManager),
-    gameMenuEvents = new GameMenuManager(transitionManager);
+    startMenuManager = new StartMenuManager(transitionManager),
+    gameManager = new GameManager(transitionManager);
 
 const init = () => {
 
     backGroundAnimation.startAnimation();
-    startMenuEvents.setEvents();
-    gameMenuEvents.setEvents();
+    startMenuManager.setEvents();
+    gameManager.setEvents();
+
+    transitionManager.setGameManager(gameManager);
+    transitionManager.setMenuManager(startMenuManager);
 
 }
 

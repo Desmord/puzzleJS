@@ -8,6 +8,20 @@ class TransitionManager {
         this.gameBoard = document.querySelector(`.gameBoard`);
         this.gameMenu = document.querySelector(`.gameMenu`);
         this.orientation = `landscape`;
+        this.menuManager = null;
+        this.gameManager = null;
+
+    }
+
+    setGameManager(manager){
+
+        this.gameManager = manager;
+
+    }
+
+    setMenuManager(manager){
+
+        this.menuManager = manager;
 
     }
 
@@ -210,6 +224,10 @@ class TransitionManager {
         }).then(() => {
 
             return this.showGame();
+
+        }).then(()=>{
+
+            this.gameManager.init();
 
         }).catch((err) => {
 

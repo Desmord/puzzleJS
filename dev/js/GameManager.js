@@ -6,6 +6,8 @@ class GameManager {
         this.gameBoard = document.querySelector(`.gameBoard`);
         // this.bctx = this.gameBoard.getContext(`2d`);
         this.image = new Image();
+        this.gameCellArray = [];
+        this.gameCellWidth = 0;
         this.level = 3;
 
     }
@@ -13,6 +15,12 @@ class GameManager {
     setLevel(lvl) {
 
         this.level = lvl;
+
+    }
+
+    setGameCellWidth(width) {
+
+        this.gameCellWidth = width;
 
     }
 
@@ -108,6 +116,8 @@ class GameManager {
 
             const cellSize = Number.parseInt((this.gameBoard.clientWidth - (this.level * 2)) / this.level);
 
+            this.setGameCellWidth(cellSize);
+
             for (let i = 0; i < this.level; i++) {
                 for (let j = 0; j < this.level; j++) {
 
@@ -118,21 +128,58 @@ class GameManager {
 
                     gameCell.style.backgroundColor = `white`;
                     gameCell.style.marginLeft = `2px`;
+                    gameCell.classList.add(`gameCell`);
 
                     this.gameBoard.appendChild(gameCell);
 
                 }
             }
 
-
-            //tutaj ustawianie styli width
+            resolve();
 
         });
 
     }
 
+    createGameCellArray() {
 
+        return new Promise((resolve, reject) => {
 
+            const cells = [...document.querySelectorAll(`.gameCell`)];
+
+            let counter = 0;
+
+            for (let i = 0; i < this.level; i++) {
+                for (let j = 0; j < this.level; j++) {
+
+                    this.gameCellArray.push({
+                        x: cells[counter].offsetLeft,
+                        maxX: cells[counter].offsetLeft + this.gameCellWidth,
+                        y: cells[counter].offsetTop,
+                        maxY: cells[counter].offsetTop + this.gameCellWidth,
+                        order: counter
+                    });
+
+                    counter++;
+
+                }
+            }
+
+            resolve();
+
+        });
+
+    }
+
+    shuffleCellsArray() {
+
+        return new Promise((resolve, reject) => {
+
+            console.log(`mieszamy`);
+            resolve();
+        });
+
+    }
 
 
     //------------------------------------------------------------------------
@@ -156,6 +203,14 @@ class GameManager {
             this.removeBoard().then(() => {
 
                 return this.createEmptyBoard();
+
+            }).then(() => {
+
+                return this.createGameCellArray();
+
+            }).then(()=>{
+
+                return this.shuffleCellsArray();
 
             }).catch((err) => {
 

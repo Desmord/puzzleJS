@@ -68,10 +68,17 @@ class GameManager {
 
     }
 
-    //------------------------------------------------------------------------
-    //------------------------------------------------------------------------
-    //----------------------------------Malowanie planszy---------------------
-    //------------------------------------------------------------------------
+    clearGameArray() {
+
+        return new Promise((resolve, reject) => {
+
+            this.gameCellArray = [];
+
+            resolve();
+
+        });
+
+    }
 
     removeBoard() {
 
@@ -207,12 +214,33 @@ class GameManager {
 
     }
 
+    drawCells() {
+
+        return new Promise((resolve, reject) => {
+
+            const cells = [...document.querySelectorAll(`.gameCell`)];
+
+            for (let i = 0; i < this.gameCellArray.length; i++) {
+
+                cells[i].appendChild(this.gameCellArray[i].img);
+
+            }
+
+            resolve();
+
+        });
+
+    }
 
 
 
     loadGame() {
 
-        this.removeBoard().then(() => {
+        this.clearGameArray().then(() => {
+
+            return this.removeBoard();
+
+        }).then(() => {
 
             return this.createEmptyBoard();
 
@@ -224,10 +252,11 @@ class GameManager {
 
             return this.shuffleCellsArray();
 
+        }).then(() => {
+
+            return this.drawCells();
+
         }).catch((err) => {
-
-
-            //wyrysowanie losowaycxh   -  // cells[counter].appendChild(img);
 
             console.log(err);
 
@@ -235,17 +264,11 @@ class GameManager {
 
     }
 
-
-    //------------------------------------------------------------------------
-    //------------------------------------------------------------------------
-    //------------------------------------------------------------------------
-    //------------------------------------------------------------------------
     setEvents() {
 
         this.setCloseEvent();
         this.hoverEvents();
 
-        // this.image.addEventListener(`load`, this.drawImage.bind(this), false);
         this.image.addEventListener(`load`, this.loadGame.bind(this), false);
 
     }

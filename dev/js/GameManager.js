@@ -187,11 +187,27 @@ class GameManager {
 
         return new Promise((resolve, reject) => {
 
-            console.log(`mieszamy`);
+            let counter = this.gameCellArray.length;
+
+            while (counter > 0) {
+
+                let index = Math.floor(Math.random() * counter);
+
+                counter--;
+
+                let temp = this.gameCellArray[counter];
+                this.gameCellArray[counter] = this.gameCellArray[index];
+                this.gameCellArray[index] = temp;
+
+            }
+
             resolve();
+
         });
 
     }
+
+
 
 
     loadGame() {
@@ -211,7 +227,6 @@ class GameManager {
         }).catch((err) => {
 
 
-            //wylosowanie losowych
             //wyrysowanie losowaycxh   -  // cells[counter].appendChild(img);
 
             console.log(err);

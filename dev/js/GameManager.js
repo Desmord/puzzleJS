@@ -4,7 +4,6 @@ class GameManager {
 
         this.transitionManager = transitionManager;
         this.gameBoard = document.querySelector(`.gameBoard`);
-        // this.bctx = this.gameBoard.getContext(`2d`);
         this.image = new Image();
         this.gameCellArray = [];
         this.gameCellWidth = 0;
@@ -23,13 +22,6 @@ class GameManager {
         this.gameCellWidth = width;
 
     }
-
-    // clearElement() {
-
-    //     this.bctx.clearRect(0, 0, this.gameBoard.width, this.gameBoard.width);
-    //     this.bctx.beginPath();
-
-    // }
 
     setCloseEvent() {
 
@@ -76,21 +68,6 @@ class GameManager {
 
     }
 
-    // drawImage() {
-
-    //     this.gameBoard.width = this.gameBoard.clientWidth;
-    //     this.gameBoard.height = this.gameBoard.clientWidth;
-
-    //     this.bctx.drawImage(this.image, 0, 0, this.gameBoard.width, this.gameBoard.width);
-
-    // }
-
-    // loadNewImage() {
-
-    //     this.image.src = `https://source.unsplash.com/random/${this.gameBoard.clientWidth}x${this.gameBoard.clientWidth}#` + new Date().getTime();
-
-    // }
-
     //------------------------------------------------------------------------
     //------------------------------------------------------------------------
     //----------------------------------Malowanie planszy---------------------
@@ -110,6 +87,14 @@ class GameManager {
 
     }
 
+    loadNewImage() {
+
+        this.removeBoard();
+
+        this.image.src = `https://source.unsplash.com/random/${this.gameBoard.clientWidth}x${this.gameBoard.clientWidth}#` + new Date().getTime();
+
+    }
+
     createEmptyBoard() {
 
         return new Promise((resolve, reject) => {
@@ -121,13 +106,12 @@ class GameManager {
             for (let i = 0; i < this.level; i++) {
                 for (let j = 0; j < this.level; j++) {
 
-                    let gameCell = document.createElement(`canvas`);
+                    let gameCell = document.createElement(`div`);
 
-                    gameCell.width = cellSize;
-                    gameCell.height = cellSize;
-
-                    gameCell.style.backgroundColor = `white`;
+                    gameCell.style.width = `${cellSize}px`;
+                    gameCell.style.height = `${cellSize}px`;
                     gameCell.style.marginLeft = `2px`;
+                    gameCell.style.marginTop = `2px`;
                     gameCell.classList.add(`gameCell`);
 
                     this.gameBoard.appendChild(gameCell);
@@ -141,23 +125,50 @@ class GameManager {
 
     }
 
+    getImagePortion(imgObj, size, startX, startY) {
+
+        let tnCanvas = document.createElement(`canvas`),
+            tnCanvasContext = tnCanvas.getContext(`2d`);
+
+        tnCanvas.width = size;
+        tnCanvas.height = size;
+
+        let bufferCanvas = document.createElement(`canvas`),
+            bufferContext = bufferCanvas.getContext(`2d`);
+
+        bufferCanvas.width = imgObj.width;
+        bufferCanvas.height = imgObj.height;
+
+        bufferContext.drawImage(imgObj, 0, 0);
+        tnCanvasContext.drawImage(bufferCanvas, startX, startY, size, size, 0, 0, size, size);
+
+        return tnCanvas;
+
+    }
+
     createGameCellArray() {
 
         return new Promise((resolve, reject) => {
 
-            const cells = [...document.querySelectorAll(`.gameCell`)];
+            const cells = [...document.querySelectorAll(`.gameCell`)],
+                parentLeft = cells[0].parentNode.offsetLeft,
+                parentTop = cells[0].parentNode.offsetTop;
 
             let counter = 0;
 
             for (let i = 0; i < this.level; i++) {
                 for (let j = 0; j < this.level; j++) {
 
+                    let startX = cells[counter].offsetLeft - parentLeft,
+                        startY = cells[counter].offsetTop - parentTop;
+
                     this.gameCellArray.push({
                         x: cells[counter].offsetLeft,
                         maxX: cells[counter].offsetLeft + this.gameCellWidth,
                         y: cells[counter].offsetTop,
                         maxY: cells[counter].offsetTop + this.gameCellWidth,
-                        order: counter
+                        order: counter,
+                        img: this.getImagePortion(this.image, this.gameCellWidth, startX, startY)
                     });
 
                     counter++;
@@ -171,12 +182,40 @@ class GameManager {
 
     }
 
+
     shuffleCellsArray() {
 
         return new Promise((resolve, reject) => {
 
             console.log(`mieszamy`);
             resolve();
+        });
+
+    }
+
+
+    loadGame() {
+
+        this.removeBoard().then(() => {
+
+            return this.createEmptyBoard();
+
+        }).then(() => {
+
+            return this.createGameCellArray();
+
+        }).then(() => {
+
+            return this.shuffleCellsArray();
+
+        }).catch((err) => {
+
+
+            //wylosowanie losowych
+            //wyrysowanie losowaycxh   -  // cells[counter].appendChild(img);
+
+            console.log(err);
+
         });
 
     }
@@ -192,33 +231,15 @@ class GameManager {
         this.hoverEvents();
 
         // this.image.addEventListener(`load`, this.drawImage.bind(this), false);
+        this.image.addEventListener(`load`, this.loadGame.bind(this), false);
 
     }
-
 
     init() {
 
         setTimeout(() => {
 
-            this.removeBoard().then(() => {
-
-                return this.createEmptyBoard();
-
-            }).then(() => {
-
-                return this.createGameCellArray();
-
-            }).then(()=>{
-
-                return this.shuffleCellsArray();
-
-            }).catch((err) => {
-
-                console.log(err);
-
-            });
-
-            // this.loadNewImage();
+            this.loadNewImage();
 
         }, 600);
 

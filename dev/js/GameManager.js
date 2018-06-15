@@ -33,7 +33,7 @@ class GameManager {
 
     }
 
-    hoverEvents() {
+    setHoverEvents() {
 
         const menu = document.querySelector(`.menuButtons`);
 
@@ -63,6 +63,45 @@ class GameManager {
         menu.addEventListener(`mouseleave`, () => {
 
             document.querySelector(`.tooltip`).style.opacity = `0`;
+
+        });
+
+    }
+
+    setResizeEvent() {
+
+        let event;
+
+        window.addEventListener(`resize`, () => {
+
+            clearTimeout(event);
+
+            event = setTimeout(() => {
+
+
+                this.transitionManager.setElementsSize().then(() => {
+
+                    return this.removeBoard();
+
+                }).then(() => {
+
+                    return this.createEmptyBoard();
+
+                }).then(() => {
+
+                    return this.updateGameCellArray();
+
+                }).then(() => {
+
+                    return this.drawCells();
+
+                }).catch((err) => {
+
+                    console.log(err);
+
+                });
+
+            }, 200);
 
         });
 
@@ -143,10 +182,10 @@ class GameManager {
         let bufferCanvas = document.createElement(`canvas`),
             bufferContext = bufferCanvas.getContext(`2d`);
 
-        bufferCanvas.width = imgObj.width;
-        bufferCanvas.height = imgObj.height;
+        bufferCanvas.width = this.gameBoard.clientWidth;
+        bufferCanvas.height = this.gameBoard.clientWidth;
 
-        bufferContext.drawImage(imgObj, 0, 0);
+        bufferContext.drawImage(imgObj, 0, 0, this.gameBoard.clientWidth, this.gameBoard.clientWidth);
         tnCanvasContext.drawImage(bufferCanvas, startX, startY, size, size, 0, 0, size, size);
 
         return tnCanvas;
@@ -180,6 +219,82 @@ class GameManager {
 
                     counter++;
 
+                }
+            }
+
+            resolve();
+
+        });
+
+    }
+
+
+
+    updateGameCellArray() {
+
+        return new Promise((resolve, reject) => {
+
+            const cells = [...document.querySelectorAll(`.gameCell`)],
+                parentLeft = cells[0].parentNode.offsetLeft,
+                parentTop = cells[0].parentNode.offsetTop;
+
+            let order = [];
+
+            //getting cells order
+            for (let i = 0; i < this.gameCellArray.length; i++) {
+
+                order.push(this.gameCellArray[i].order);
+
+            }
+
+            //ordering cells Array
+            for (let i = 0; i < this.gameCellArray.length; i++) {
+
+                let tempCell = this.gameCellArray[i];
+
+                for (let j = 0; j < this.gameCellArray.length; j++) {
+
+                    if (this.gameCellArray[j].order === i) {
+
+                        this.gameCellArray[i] = this.gameCellArray[j];
+                        this.gameCellArray[j] = tempCell;
+
+                    }
+                }
+            }
+
+            //updating gameCells size and position
+            for (let i = 0; i < this.gameCellArray.length; i++) {
+
+                let startX = cells[i].offsetLeft - parentLeft,
+                    startY = cells[i].offsetTop - parentTop;
+
+                this.gameCellArray[i].x = cells[i].offsetLeft;
+                this.gameCellArray[i].maxX = cells[i].offsetLeft + this.gameCellWidth;
+                this.gameCellArray[i].y = cells[i].offsetTop;
+                this.gameCellArray[i].maxY = cells[i].offsetTop + this.gameCellWidth;
+                this.gameCellArray[i].img = this.getImagePortion(this.image, this.gameCellWidth, startX, startY);
+
+            }
+
+            //setting cell back order
+            for (let i = 0; i < this.gameCellArray.length; i++) {
+
+                if (!this.gameCellArray[i].order == order[i]) {
+                    // same order
+                } else {
+
+                    let tempCell = this.gameCellArray[i];
+
+                    for (let j = 0; j < this.gameCellArray.length; j++) {
+
+                        if (this.gameCellArray[j].order == order[i]) {
+
+                            this.gameCellArray[i] = this.gameCellArray[j];
+                            this.gameCellArray[j] = tempCell;
+
+                        }
+                    }
                 }
             }
 
@@ -232,8 +347,6 @@ class GameManager {
 
     }
 
-
-
     loadGame() {
 
         this.clearGameArray().then(() => {
@@ -267,7 +380,8 @@ class GameManager {
     setEvents() {
 
         this.setCloseEvent();
-        this.hoverEvents();
+        this.setHoverEvents();
+        this.setResizeEvent();
 
         this.image.addEventListener(`load`, this.loadGame.bind(this), false);
 

@@ -101,12 +101,6 @@ class GameManager {
 
                 });
 
-
-
-                //     return this.drawCells();
-
-
-
             }, 200);
 
         });
@@ -188,10 +182,10 @@ class GameManager {
         let bufferCanvas = document.createElement(`canvas`),
             bufferContext = bufferCanvas.getContext(`2d`);
 
-        bufferCanvas.width = imgObj.width;
-        bufferCanvas.height = imgObj.height;
+        bufferCanvas.width = this.gameBoard.clientWidth;
+        bufferCanvas.height = this.gameBoard.clientWidth;
 
-        bufferContext.drawImage(imgObj, 0, 0);
+        bufferContext.drawImage(imgObj, 0, 0, this.gameBoard.clientWidth, this.gameBoard.clientWidth);
         tnCanvasContext.drawImage(bufferCanvas, startX, startY, size, size, 0, 0, size, size);
 
         return tnCanvas;
@@ -233,6 +227,8 @@ class GameManager {
         });
 
     }
+
+
 
     updateGameCellArray() {
 
@@ -285,15 +281,14 @@ class GameManager {
             for (let i = 0; i < this.gameCellArray.length; i++) {
 
                 if (!this.gameCellArray[i].order == order[i]) {
-                    console.log(`takiesamie`);
-
-                }else{
+                    // same order
+                } else {
 
                     let tempCell = this.gameCellArray[i];
 
-                    for(let j =0 ;j<this.gameCellArray.length;j++){
+                    for (let j = 0; j < this.gameCellArray.length; j++) {
 
-                        if(this.gameCellArray[j].order == order[i]){
+                        if (this.gameCellArray[j].order == order[i]) {
 
                             this.gameCellArray[i] = this.gameCellArray[j];
                             this.gameCellArray[j] = tempCell;
@@ -302,18 +297,6 @@ class GameManager {
                     }
                 }
             }
-
-            console.log(order);
-            order = [];
-
-            //getting cells order
-            for (let i = 0; i < this.gameCellArray.length; i++) {
-
-                order.push(this.gameCellArray[i].order);
-
-            }
-            console.log(order);
-            //probel z ratio wielkosci zdjecia
 
             resolve();
 

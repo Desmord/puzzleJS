@@ -8,6 +8,7 @@ class GameManager {
         this.gameCellArray = [];
         this.gameCellWidth = 0;
         this.level = 3;
+        this.endDrag = this.endDrag.bind(this);
 
     }
 
@@ -102,6 +103,49 @@ class GameManager {
                 });
 
             }, 200);
+
+        });
+
+    }
+
+
+    //-----------------------------------------------------------------
+    //-----------------------------------------------------------------
+
+
+    drag(e) {
+
+        try {
+
+            if (e.target.parentNode.classList.contains(`gameCell`)) {
+
+                e.target.parentNode.style.webkitTransform = `translate(${((e.target.parentNode.offsetLeft - e.clientX) * -1)-(e.target.width / 2)}px
+                                                        ,${((e.target.parentNode.offsetTop - e.clientY)* -1) - e.target.height / 2 }px)`;
+
+            }
+
+        } catch (err) {
+
+            console.log(`Wyjechano poza obszar gry.`);
+
+        }
+
+    }
+
+    endDrag() {
+
+        document.removeEventListener(`mouseup`, this.endDrag);
+        document.removeEventListener(`mousemove`, this.drag);
+
+    }
+
+
+    setGameCellsMouseMoveEvent() {
+        //gameCell
+        document.querySelector(`.gameBoard`).addEventListener(`mousedown`, (e) => {
+
+            document.addEventListener(`mouseup`, this.endDrag);
+            document.addEventListener(`mousemove`, this.drag);
 
         });
 
@@ -382,6 +426,7 @@ class GameManager {
         this.setCloseEvent();
         this.setHoverEvents();
         this.setResizeEvent();
+        this.setGameCellsMouseMoveEvent();
 
         this.image.addEventListener(`load`, this.loadGame.bind(this), false);
 
@@ -397,11 +442,4 @@ class GameManager {
 
     }
 
-    // rysowanie napisu wczytywanie gry
-    // rysowanie calej mapy  z podzialem na kwasdraty (po to zeby resize bylo latwe)
-    // resize ze zmiana wielkosci i odswiezaniem obrazu
-
-
-    // przy wczytyani gry tez odrazu jedno zdj
-    // przy zamknieciu zmian zdj lub/i na przycisk
 }

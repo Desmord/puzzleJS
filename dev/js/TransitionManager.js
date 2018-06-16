@@ -226,9 +226,14 @@ class TransitionManager {
             return this.showGame();
 
         }).then(() => {
-            
+
             this.gameManager.setLevel(this.level);
-            this.gameManager.init();
+
+            setTimeout(() => {
+
+                this.gameManager.loadNewImage();
+
+            }, 600);
 
         }).catch((err) => {
 

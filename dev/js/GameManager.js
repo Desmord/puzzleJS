@@ -7,14 +7,17 @@ class GameManager {
         this.gameCellWidth = 0;
         this.level = 3;
         this.resizeEvent = null;
+        this.currentDragCell = null;
         this.gameBoard = document.querySelector(`.gameBoard`);
         this.image = new Image();
 
         // Binding events functions
+        this.drag = this.drag.bind(this);
         this.endDrag = this.endDrag.bind(this);
         this.closeGame = this.closeGame.bind(this);
         this.resizeGameBoard = this.resizeGameBoard.bind(this);
         this.gameCellsMousedown = this.gameCellsMousedown.bind(this);
+        this.checkIfStillGameBoard = this.checkIfStillGameBoard.bind(this);
 
     }
 
@@ -27,6 +30,12 @@ class GameManager {
     setGameCellWidth(width) {
 
         this.gameCellWidth = width;
+
+    }
+
+    setCurrentDragCell(cell) {
+
+        this.currentDragCell = cell;
 
     }
 
@@ -112,7 +121,9 @@ class GameManager {
 
     }
 
-    gameCellsMousedown() {
+    gameCellsMousedown(e) {
+
+        this.setCurrentDragCell(e.target);
 
         document.addEventListener(`mouseup`, this.endDrag);
         document.addEventListener(`mousemove`, this.drag);
@@ -120,10 +131,9 @@ class GameManager {
     }
 
 
-    endDrag() {
+    endDrag(e) {
 
-        //tutaj zdarzenie   
-
+        this.dropCell(e);
 
         document.removeEventListener(`mouseup`, this.endDrag);
         document.removeEventListener(`mousemove`, this.drag);
@@ -132,21 +142,128 @@ class GameManager {
 
     drag(e) {
 
-        try {
-            // Checking if clicked element id game cell
+        if (this.checkIfStillGameBoard(e)) {
+
             if (e.target.parentNode.classList.contains(`gameCell`)) {
 
                 e.target.parentNode.style.webkitTransform = `translate(${((e.target.parentNode.offsetLeft - e.clientX) * -1)-(e.target.width / 2)}px
-                                                        ,${((e.target.parentNode.offsetTop - e.clientY)* -1) - e.target.height / 2 }px)`;
+                                                            ,${((e.target.parentNode.offsetTop - e.clientY)* -1) - e.target.height / 2 }px)`;
 
             }
+        }
+    }
 
-        } catch (err) {
 
-            console.log(`Wyjechano poza obszar gry.`);
+    checkIfStillGameBoard(e) {
+
+        if (e.clientX < this.gameBoard.offsetLeft ||
+            e.clientX > this.gameBoard.offsetLeft + this.gameBoard.clientWidth ||
+            e.clientY < this.gameBoard.offsetTop ||
+            e.clientY > this.gameBoard.offsetTop + this.gameBoard.clientHeight) {
+
+            return false;
 
         }
 
+        return true;
+
+    }
+
+    /**
+     * Function checks where the event of leaving the button occurred, depending on where,
+     *  create new order of the game's cells Array with the game cells,then removing game board
+     *  and redraws the game in the changed order.
+     * @param {Event} e 
+     */
+    dropCell(e) {
+        // Check if mouseEvent outside of game board
+        if (this.checkIfStillGameBoard(e)) {
+
+            let currentCanvas = this.currentDragCell,
+                targetCanvas = null,
+                cells = [...document.querySelectorAll(`.gameCell`)];
+
+            for (let i = 0; i < cells.length; i++) {
+
+                if (e.clientX > cells[i].offsetLeft &&
+                    e.clientX < cells[i].offsetLeft + this.gameCellWidth &&
+                    e.clientY > cells[i].offsetTop &&
+                    e.clientY < cells[i].offsetTop + this.gameCellWidth) {
+
+                    targetCanvas = cells[i].children[0];
+
+                }
+
+            }
+            //Check if event occur at the same place as at the begining
+            if (targetCanvas == currentCanvas) {
+
+                this.removeBoard().then(() => {
+
+                    return this.createEmptyBoard();
+
+                }).then(() => {
+
+                    return this.drawCells();
+
+                }).catch((err) => {
+
+                    console.log(err);
+
+                });
+
+            } else {
+                //Creating temporary object
+                let currentObject = null,
+                    currentId = 0,
+                    targetObject = null,
+                    targetId = 0;
+                // Searching witch cells was target game cell and start game cell and save it 
+                for (let i = 0; i < this.gameCellArray.length; i++) {
+
+                    if (this.gameCellArray[i].img == currentCanvas) {
+
+                        currentObject = this.gameCellArray[i];
+                        currentId = i;
+
+                    } else if (this.gameCellArray[i].img == targetCanvas) {
+
+                        targetObject = this.gameCellArray[i];
+                        targetId = i;
+
+                    }
+
+                }
+                // Change gameCellArray order
+                this.gameCellArray[currentId] = targetObject;
+                this.gameCellArray[targetId] = currentObject;
+
+                this.removeBoard().then(() => {
+
+                    return this.createEmptyBoard();
+
+                }).then(() => {
+
+                    return this.drawCells();
+
+                }).catch((err) => {
+
+                    console.log(err);
+
+                });
+
+
+            }
+
+            //sprawdzanie  orderu w tablicy
+
+        } else {
+
+            console.log(`Kamorka gry poza planszą.`);
+
+        }
+
+        // sprawdzenie tego zostawania w miejscu komorek jak za szybko sie jedzie - mouseleave
     }
 
     loadGame() {
@@ -176,16 +293,6 @@ class GameManager {
             console.log(err);
 
         });
-
-    }
-
-    init() {
-
-        setTimeout(() => {
-
-            this.loadNewImage();
-
-        }, 600);
 
     }
 
@@ -227,9 +334,7 @@ class GameManager {
 
         return new Promise((resolve, reject) => {
 
-            const cellSize = Number.parseInt((this.gameBoard.clientWidth - (this.level * 2)) / this.level);
-
-            this.setGameCellWidth(cellSize);
+            this.setGameCellWidth(Number.parseInt((this.gameBoard.clientWidth - 10) / 3));
 
             for (let i = 0; i < this.level; i++) {
                 for (let j = 0; j < this.level; j++) {
@@ -270,10 +375,6 @@ class GameManager {
                         startY = cells[counter].offsetTop - parentTop;
 
                     this.gameCellArray.push({
-                        x: cells[counter].offsetLeft,
-                        maxX: cells[counter].offsetLeft + this.gameCellWidth,
-                        y: cells[counter].offsetTop,
-                        maxY: cells[counter].offsetTop + this.gameCellWidth,
                         order: counter,
                         img: this.getImagePortion(this.image, this.gameCellWidth, startX, startY)
                     });

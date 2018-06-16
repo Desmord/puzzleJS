@@ -3,12 +3,18 @@ class GameManager {
     constructor(transitionManagerd) {
 
         this.transitionManager = transitionManager;
-        this.gameBoard = document.querySelector(`.gameBoard`);
-        this.image = new Image();
         this.gameCellArray = [];
         this.gameCellWidth = 0;
         this.level = 3;
+        this.resizeEvent = null;
+        this.gameBoard = document.querySelector(`.gameBoard`);
+        this.image = new Image();
+
+        // Binding events functions
         this.endDrag = this.endDrag.bind(this);
+        this.closeGame = this.closeGame.bind(this);
+        this.resizeGameBoard = this.resizeGameBoard.bind(this);
+        this.gameCellsMousedown = this.gameCellsMousedown.bind(this);
 
     }
 
@@ -24,99 +30,110 @@ class GameManager {
 
     }
 
-    setCloseEvent() {
+    setDOMElementsEvents() {
+        // Menu events
+        document.querySelector(`.menuButtons`).addEventListener(`mouseover`, this.hoverGameMenu);
+        document.querySelector(`.menuButtons`).addEventListener(`mouseleave`, this.mouseLeaveGameMenu);
+        document.querySelector(`#endGame`).addEventListener(`click`, this.closeGame);
 
-        document.querySelector(`#endGame`).addEventListener(`click`, () => {
+        // Game board events
+        document.querySelector(`.gameBoard`).addEventListener(`mousedown`, this.gameCellsMousedown);
 
-            this.transitionManager.endGame();
-
-        });
-
-    }
-
-    setHoverEvents() {
-
-        const menu = document.querySelector(`.menuButtons`);
-
-        menu.addEventListener(`mouseover`, (e) => {
-
-            let tooltip = document.querySelector(`.tooltip`);
-
-            if (e.target.id === `endGame`) {
-
-                tooltip.innerHTML = e.target.getAttribute(`data-tooltip`);
-                tooltip.style.opacity = `0.7`;
-
-            } else if (e.target.id === `start`) {
-
-                tooltip.innerHTML = e.target.getAttribute(`data-tooltip`);
-                tooltip.style.opacity = `0.7`;
-
-            } else if (e.target.id === `pause`) {
-
-                tooltip.innerHTML = e.target.getAttribute(`data-tooltip`);
-                tooltip.style.opacity = `0.7`;
-
-            }
-
-        });
-
-        menu.addEventListener(`mouseleave`, () => {
-
-            document.querySelector(`.tooltip`).style.opacity = `0`;
-
-        });
+        // Other events
+        window.addEventListener(`resize`, this.resizeGameBoard);
+        this.image.addEventListener(`load`, this.loadGame.bind(this), false);
 
     }
 
-    setResizeEvent() {
+    closeGame() {
 
-        let event;
+        this.transitionManager.endGame();
 
-        window.addEventListener(`resize`, () => {
+    }
 
-            clearTimeout(event);
+    hoverGameMenu(e) {
 
-            event = setTimeout(() => {
+        let tooltip = document.querySelector(`.tooltip`);
 
+        if (e.target.id === `endGame`) {
 
-                this.transitionManager.setElementsSize().then(() => {
+            tooltip.innerHTML = e.target.getAttribute(`data-tooltip`);
+            tooltip.style.opacity = `0.7`;
 
-                    return this.removeBoard();
+        } else if (e.target.id === `start`) {
 
-                }).then(() => {
+            tooltip.innerHTML = e.target.getAttribute(`data-tooltip`);
+            tooltip.style.opacity = `0.7`;
 
-                    return this.createEmptyBoard();
+        } else if (e.target.id === `pause`) {
 
-                }).then(() => {
+            tooltip.innerHTML = e.target.getAttribute(`data-tooltip`);
+            tooltip.style.opacity = `0.7`;
 
-                    return this.updateGameCellArray();
+        }
 
-                }).then(() => {
+    }
 
-                    return this.drawCells();
+    mouseLeaveGameMenu() {
 
-                }).catch((err) => {
+        document.querySelector(`.tooltip`).style.opacity = `0`;
 
-                    console.log(err);
+    }
 
-                });
+    resizeGameBoard() {
 
-            }, 200);
+        clearTimeout(this.resizeEvent);
 
-        });
+        this.resizeEvent = setTimeout(() => {
+
+            this.transitionManager.setElementsSize().then(() => {
+
+                return this.removeBoard();
+
+            }).then(() => {
+
+                return this.createEmptyBoard();
+
+            }).then(() => {
+
+                return this.updateGameCellArray();
+
+            }).then(() => {
+
+                return this.drawCells();
+
+            }).catch((err) => {
+
+                console.log(err);
+
+            });
+
+        }, 200);
+
+    }
+
+    gameCellsMousedown() {
+
+        document.addEventListener(`mouseup`, this.endDrag);
+        document.addEventListener(`mousemove`, this.drag);
 
     }
 
 
-    //-----------------------------------------------------------------
-    //-----------------------------------------------------------------
+    endDrag() {
 
+        //tutaj zdarzenie   
+
+
+        document.removeEventListener(`mouseup`, this.endDrag);
+        document.removeEventListener(`mousemove`, this.drag);
+
+    }
 
     drag(e) {
 
         try {
-
+            // Checking if clicked element id game cell
             if (e.target.parentNode.classList.contains(`gameCell`)) {
 
                 e.target.parentNode.style.webkitTransform = `translate(${((e.target.parentNode.offsetLeft - e.clientX) * -1)-(e.target.width / 2)}px
@@ -132,22 +149,43 @@ class GameManager {
 
     }
 
-    endDrag() {
+    loadGame() {
 
-        document.removeEventListener(`mouseup`, this.endDrag);
-        document.removeEventListener(`mousemove`, this.drag);
+        this.clearGameArray().then(() => {
+
+            return this.removeBoard();
+
+        }).then(() => {
+
+            return this.createEmptyBoard();
+
+        }).then(() => {
+
+            return this.createGameCellArray();
+
+        }).then(() => {
+
+            return this.shuffleCellsArray();
+
+        }).then(() => {
+
+            return this.drawCells();
+
+        }).catch((err) => {
+
+            console.log(err);
+
+        });
 
     }
 
+    init() {
 
-    setGameCellsMouseMoveEvent() {
-        //gameCell
-        document.querySelector(`.gameBoard`).addEventListener(`mousedown`, (e) => {
+        setTimeout(() => {
 
-            document.addEventListener(`mouseup`, this.endDrag);
-            document.addEventListener(`mousemove`, this.drag);
+            this.loadNewImage();
 
-        });
+        }, 600);
 
     }
 
@@ -198,8 +236,8 @@ class GameManager {
 
                     let gameCell = document.createElement(`div`);
 
-                    gameCell.style.width = `${cellSize}px`;
-                    gameCell.style.height = `${cellSize}px`;
+                    gameCell.style.width = `${this.gameCellWidth}px`;
+                    gameCell.style.height = `${this.gameCellWidth}px`;
                     gameCell.style.marginLeft = `2px`;
                     gameCell.style.marginTop = `2px`;
                     gameCell.classList.add(`gameCell`);
@@ -212,27 +250,6 @@ class GameManager {
             resolve();
 
         });
-
-    }
-
-    getImagePortion(imgObj, size, startX, startY) {
-
-        let tnCanvas = document.createElement(`canvas`),
-            tnCanvasContext = tnCanvas.getContext(`2d`);
-
-        tnCanvas.width = size;
-        tnCanvas.height = size;
-
-        let bufferCanvas = document.createElement(`canvas`),
-            bufferContext = bufferCanvas.getContext(`2d`);
-
-        bufferCanvas.width = this.gameBoard.clientWidth;
-        bufferCanvas.height = this.gameBoard.clientWidth;
-
-        bufferContext.drawImage(imgObj, 0, 0, this.gameBoard.clientWidth, this.gameBoard.clientWidth);
-        tnCanvasContext.drawImage(bufferCanvas, startX, startY, size, size, 0, 0, size, size);
-
-        return tnCanvas;
 
     }
 
@@ -271,8 +288,6 @@ class GameManager {
         });
 
     }
-
-
 
     updateGameCellArray() {
 
@@ -349,6 +364,27 @@ class GameManager {
     }
 
 
+    getImagePortion(imgObj, size, startX, startY) {
+
+        let tnCanvas = document.createElement(`canvas`),
+            tnCanvasContext = tnCanvas.getContext(`2d`);
+
+        tnCanvas.width = size;
+        tnCanvas.height = size;
+
+        let bufferCanvas = document.createElement(`canvas`),
+            bufferContext = bufferCanvas.getContext(`2d`);
+
+        bufferCanvas.width = this.gameBoard.clientWidth;
+        bufferCanvas.height = this.gameBoard.clientWidth;
+
+        bufferContext.drawImage(imgObj, 0, 0, this.gameBoard.clientWidth, this.gameBoard.clientWidth);
+        tnCanvasContext.drawImage(bufferCanvas, startX, startY, size, size, 0, 0, size, size);
+
+        return tnCanvas;
+
+    }
+
     shuffleCellsArray() {
 
         return new Promise((resolve, reject) => {
@@ -388,57 +424,6 @@ class GameManager {
             resolve();
 
         });
-
-    }
-
-    loadGame() {
-
-        this.clearGameArray().then(() => {
-
-            return this.removeBoard();
-
-        }).then(() => {
-
-            return this.createEmptyBoard();
-
-        }).then(() => {
-
-            return this.createGameCellArray();
-
-        }).then(() => {
-
-            return this.shuffleCellsArray();
-
-        }).then(() => {
-
-            return this.drawCells();
-
-        }).catch((err) => {
-
-            console.log(err);
-
-        });
-
-    }
-
-    setEvents() {
-
-        this.setCloseEvent();
-        this.setHoverEvents();
-        this.setResizeEvent();
-        this.setGameCellsMouseMoveEvent();
-
-        this.image.addEventListener(`load`, this.loadGame.bind(this), false);
-
-    }
-
-    init() {
-
-        setTimeout(() => {
-
-            this.loadNewImage();
-
-        }, 600);
 
     }
 

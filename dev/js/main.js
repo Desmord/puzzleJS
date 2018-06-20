@@ -7,7 +7,7 @@ const init = () => {
 
     backGroundAnimation.startAnimation();
     startMenuManager.setEvents();
-    gameManager.setEvents();
+    gameManager.setDOMElementsEvents();
 
     transitionManager.setGameManager(gameManager);
     transitionManager.setMenuManager(startMenuManager);

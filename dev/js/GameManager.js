@@ -390,6 +390,9 @@ class GameManager {
 
     }
 
+    /**
+     * Updating game cells size and position
+     */
     updateGameCellArray() {
 
         return new Promise((resolve, reject) => {
@@ -398,70 +401,63 @@ class GameManager {
                 parentLeft = cells[0].parentNode.offsetLeft,
                 parentTop = cells[0].parentNode.offsetTop;
 
-            let order = [];
+            let counter = 0;
 
-            //getting cells order
-            for (let i = 0; i < this.gameCellArray.length; i++) {
 
-                order.push(this.gameCellArray[i].order);
+            // Saving cells order
+            const originalOrder = this.gameCellArray.map(cellObject => cellObject.order);
 
-            }
 
-            //ordering cells Array
-            for (let i = 0; i < this.gameCellArray.length; i++) {
+            // Ordering cells Array in ascending order - in order to get a proper part of the image
+            this.gameCellArray = this.gameCellArray.sort((cellObject1, cellObject2) => {
 
-                let tempCell = this.gameCellArray[i];
+                return cellObject1.order > cellObject2.order;
 
-                for (let j = 0; j < this.gameCellArray.length; j++) {
 
-                    if (this.gameCellArray[j].order === i) {
+                // Updating cell position and canvas size, updating image portion
+            }).map(cellObject => {
 
-                        this.gameCellArray[i] = this.gameCellArray[j];
-                        this.gameCellArray[j] = tempCell;
+                let startX = cells[counter].offsetLeft - parentLeft,
+                    startY = cells[counter].offsetTop - parentTop;
+
+                cellObject.x = cells[counter].offsetLeft;
+                cellObject.maxX = cells[counter].offsetLeft + this.gameCellWidth;
+                cellObject.y = cells[counter].offsetTop;
+                cellObject.maxY = cells[counter].offsetTop + this.gameCellWidth;
+                cellObject.img = this.getImagePortion(this.image, this.gameCellWidth, startX, startY);
+
+                counter++;
+
+                return cellObject;
+
+            });
+
+
+            // Setting cell to original order
+            counter = 0;
+
+            this.gameCellArray.forEach((cell, index, array) => {
+
+                let tempCell = cell;
+
+                this.gameCellArray.forEach((cell2, index2, array2) => {
+
+                    if (cell2.order == originalOrder[counter]) {
+
+                        array[index] = array2[index2];
+                        array2[index2] = tempCell;
 
                     }
-                }
-            }
 
-            //updating gameCells size and position
-            for (let i = 0; i < this.gameCellArray.length; i++) {
+                });
 
-                let startX = cells[i].offsetLeft - parentLeft,
-                    startY = cells[i].offsetTop - parentTop;
+                counter++;
 
-                this.gameCellArray[i].x = cells[i].offsetLeft;
-                this.gameCellArray[i].maxX = cells[i].offsetLeft + this.gameCellWidth;
-                this.gameCellArray[i].y = cells[i].offsetTop;
-                this.gameCellArray[i].maxY = cells[i].offsetTop + this.gameCellWidth;
-                this.gameCellArray[i].img = this.getImagePortion(this.image, this.gameCellWidth, startX, startY);
-
-            }
-
-            //setting cell back order
-            for (let i = 0; i < this.gameCellArray.length; i++) {
-
-                if (!this.gameCellArray[i].order == order[i]) {
-                    // same order
-                } else {
-
-                    let tempCell = this.gameCellArray[i];
-
-                    for (let j = 0; j < this.gameCellArray.length; j++) {
-
-                        if (this.gameCellArray[j].order == order[i]) {
-
-                            this.gameCellArray[i] = this.gameCellArray[j];
-                            this.gameCellArray[j] = tempCell;
-
-                        }
-                    }
-                }
-            }
+            });
 
             resolve();
 
         });
-
     }
 
 
